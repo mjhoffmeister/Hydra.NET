@@ -1,0 +1,21 @@
+{
+  "@context": {
+    "hydra": "http://www.w3.org/ns/hydra/core#",
+    "Collection": "hydra:Collection",
+    "member": "hydra:member"
+  },
+  "@id": "https://api.example.com/stocks",
+  "@type": "Collection",
+  "member": [
+    {
+      "@id": "https://api.example.com/stocks/1",
+      "symbol": "ABC",
+      "currentPrice": 0.32
+    },
+    {
+      "@id": "https://api.example.com/stocks/2",
+      "symbol": "XYZ",
+      "currentPrice": 351.74
+    }
+  ]
+}

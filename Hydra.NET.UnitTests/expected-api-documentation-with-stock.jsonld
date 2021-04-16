@@ -1,0 +1,85 @@
+{
+  "@context": {
+    "hydra": "https://www.w3.org/ns/hydra/core#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "ApiDocumentation": "hydra:ApiDocumentation",
+    "Class": "hydra:Class",
+    "Collection": "hydra:Collection",
+    "description": "hydra:description",
+    "memberAssertion": "hydra:memberAssertion",
+    "object": "hydra:object",
+    "Operation": "hydra:Operation",
+    "property": "hydra:property",
+    "range": "rdfs:range",
+    "readable": "hydra:readable",
+    "required": "hydra:required",
+    "supportedClass": "hydra:supportedClass",
+    "supportedOperation": "hydra:supportedOperation",
+    "supportedProperty": "hydra:supportedProperty",
+    "SupportedProperty": "hydra:SupportedProperty",
+    "title": "hydra:title",
+    "writable": "hydra:writable",
+    "doc": "https://api.example.com/doc#"
+  },
+  "@id": "https://api.example.com/doc",
+  "@type": "ApiDocumentation",
+  "supportedClass": [
+    {
+      "@id": "doc:Stock",
+      "@type": "Class",
+      "title": "Stock",
+      "description": "Represents a stock.",
+      "supportedProperty": [
+        {
+          "@type": "SupportedProperty",
+          "title": "Current price",
+          "description": "The current price of the stock.",
+          "required": true,
+          "readable": true,
+          "writable": true,
+          "property": {
+            "@id": "doc:Stock/currentPrice",
+            "range": "xsd:decimal"
+          }
+        },
+        {
+          "@type": "SupportedProperty",
+          "title": "Stock symbol",
+          "required": true,
+          "readable": true,
+          "writable": false,
+          "property": {
+            "@id": "doc:Stock/symbol",
+            "range": "xsd:string"
+          }
+        }
+      ],
+      "supportedOperation": [
+        {
+          "@type": "Operation",
+          "title": "Update stock",
+          "method": "PUT"
+        }
+      ]
+    },
+    {
+      "@id": "doc:StockCollection",
+      "@type": "Collection",
+      "title": "Stocks",
+      "description": "Stock listing",
+      "memberAssertion": {
+        "property": "rdf:type",
+        "object": "doc:Stock"
+      },
+      "supportedOperation": [
+        {
+          "@type": "Operation",
+          "title": "List stocks",
+          "method": "GET"
+        }
+      ]
+    }
+  ]
+}

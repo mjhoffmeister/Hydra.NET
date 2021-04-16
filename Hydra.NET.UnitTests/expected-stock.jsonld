@@ -1,0 +1,9 @@
+﻿{
+  "@context": {
+    "vocab": "https://api.example.com/vocab#"
+  },
+  "@id": "https://api.example.com/stocks/1",
+  "@type": "vocab:Stock",
+  "currentPrice": 23.18,
+  "symbol": "EG"
+}
