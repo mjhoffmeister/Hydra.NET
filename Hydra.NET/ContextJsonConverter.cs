@@ -1,62 +1,83 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Hydra.NET
 {
+    /// <summary>
+    /// Custom JSON converter for <see cref="Context"/>.
+    /// </summary>
     public class ContextJsonConverter : JsonConverter<Context>
     {
-        public override Context ReadJson(
-            JsonReader reader, 
-            Type objectType, 
-            [AllowNull] Context existingValue, 
-            bool hasExistingValue, 
-            JsonSerializer serializer)
+        public override Context? Read(
+            ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            // TODO: find a way to conditionally deserialize without relying on exceptions
-            try
+            // Deserialize a context reference
+            if (reader.TokenType == JsonTokenType.String)
             {
-                // Deserialize context mappings
+                string? contextReferenceString = reader.GetString();
 
-                var mappings = serializer.Deserialize<Dictionary<string, Uri>>(reader);
+                if (contextReferenceString == null)
+                    return null;
 
-                if (mappings != null)
+                return new Context(new Uri(contextReferenceString));
+            }
+
+            // Context mappings are expected at this point, so throw an exception if the context
+            // isn't a JSON object
+            if (reader.TokenType != JsonTokenType.StartObject)
+                throw new JsonException("Invalid JSON-LD context.");
+
+            // Create a dictionary for contect mappings
+            var mappings = new Dictionary<string, Uri>();
+
+            // Deserialize context mappings
+            while (reader.Read())
+            {
+                if (reader.TokenType == JsonTokenType.EndObject)
                     return new Context(mappings);
+
+                if (reader.TokenType == JsonTokenType.PropertyName)
+                {
+                    string? term = reader.GetString();
+
+                    if (term != null)
+                    {
+                        reader.Read();
+                        string? iriString = reader.GetString();
+
+                        if (iriString != null)
+                        {
+                            var iri = new Uri(iriString);
+                            mappings.Add(term, iri);
+                        }
+                    }
+                }
             }
-            catch (JsonSerializationException)
-            {
-                // Deserialize context reference
 
-                var reference = serializer.Deserialize<Uri>(reader);
-
-                if (reference != null)
-                    return new Context(reference);
-            }
-
-            throw new ArgumentException(
-                "Cannot deserialize API documentation context from provided JSON-LD.");
+            return null;
         }
 
-        public override void WriteJson(
-            JsonWriter writer, [AllowNull] Context value, JsonSerializer serializer)
+        public override void Write(
+            Utf8JsonWriter writer, Context value, JsonSerializerOptions options)
         {
-            // Write context mappings
+            // Serialize contect mappings
             if (value?.Mappings != null)
             {
                 writer.WriteStartObject();
 
                 foreach (KeyValuePair<string, Uri> mapping in value.Mappings)
                 {
-                    writer.WritePropertyName(mapping.Key);
-                    writer.WriteValue(mapping.Value.ToString());
+                    writer.WriteString(
+                        JsonEncodedText.Encode(mapping.Key), mapping.Value.ToString());
                 }
 
                 writer.WriteEndObject();
             }
-            // Write context reference
+            // Serialize context reference
             else if (value?.Reference != null)
-                writer.WriteValue(value.Reference.ToString());
+                writer.WriteStringValue(value.Reference.ToString());
         }
     }
 }

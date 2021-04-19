@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.IO;
+using System.Text.Json;
 using Xunit;
 
 namespace Hydra.NET.UnitTests
@@ -28,7 +28,10 @@ namespace Hydra.NET.UnitTests
 
             // Act
 
-            string jsonLD = JsonConvert.SerializeObject(stockCollection, Formatting.Indented);
+            string jsonLD = JsonSerializer.Serialize(stockCollection, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
 
             // Assert
 

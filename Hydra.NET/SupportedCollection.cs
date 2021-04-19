@@ -1,10 +1,14 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace Hydra.NET
 {
+    /// <summary>
+    /// A Collection class supported by the API.
+    /// Rather than manually creating objects of this type, it's recommended to decorate your
+    /// classes with <see cref="SupportedCollectionAttribute"/> and add them to your API
+    /// documentation via <see cref="ApiDocumentation.AddSupportedClass{T}"/>.
+    /// </summary>
     public class SupportedCollection : SupportedClass
     {
         public SupportedCollection() { }
@@ -19,21 +23,16 @@ namespace Hydra.NET
         }
 
         /// <summary>
-        /// Member assertion.
-        /// </summary>
-        [JsonProperty(
-            NullValueHandling = NullValueHandling.Ignore,
-            PropertyName = "memberAssertion",
-            Order = 5)]
-        public MemberAssertion? MemberAssertion { get; set; }
-
-        /// <summary>
         /// The collection's type: Collection.
         /// </summary>
-        [JsonProperty(
-            NullValueHandling = NullValueHandling.Ignore,
-            PropertyName = "@type",
-            Order = 2)]
+        [JsonPropertyName("@type")]
         public override string Type => "Collection";
+
+        /// <summary>
+        /// Member assertion.
+        /// </summary>
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("memberAssertion")]
+        public MemberAssertion? MemberAssertion { get; set; }
     }
 }

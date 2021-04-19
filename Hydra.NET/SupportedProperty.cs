@@ -1,9 +1,17 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace Hydra.NET
 {
+    /// <summary>
+    /// A property known to be supported by a class.
+    /// Rather than manually creating objects of this type, it's recommended to decorate your
+    /// properties with <see cref="SupportedPropertyAttribute"/>.
+    /// </summary>
     public class SupportedProperty
     {
+        /// <summary>
+        /// Default constructor for serialization.
+        /// </summary>
         public SupportedProperty() { }
 
         internal SupportedProperty(SupportedPropertyAttribute supportedPropertyAttribute)
@@ -17,54 +25,53 @@ namespace Hydra.NET
         }
 
         /// <summary>
-        /// The property's description. Default: <see cref="null"/>.
+        /// The property's type: SupportedProperty.
         /// </summary>
-        [JsonProperty(
-            NullValueHandling = NullValueHandling.Ignore,
-            PropertyName = "description",
-            Order = 4)]
-        public string? Description { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("@type")]
+        public string Type => "SupportedProperty";
 
         /// <summary>
-        /// True if the property is readable; false, otherwise. Default: <see cref="true"/>.
+        /// The property's title.
         /// </summary>
-        [JsonProperty(PropertyName = "readable", Order = 6)]
-        public bool IsReadable { get; set; } = true;
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("title")]
+        public string? Title { get; set; }
+
+        /// <summary>
+        /// The property's description.
+        /// </summary>
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("description")]
+        public string? Description { get; set; }
 
         /// <summary>
         /// True if the property is required; false, otherwise. Default: <see cref="true"/>.
         /// </summary>
-        [JsonProperty(PropertyName = "required", Order = 5)]
+        [JsonPropertyName("required")]
         public bool IsRequired { get; set; } = true;
+
+        /// <summary>
+        /// True if the property is readable; false, otherwise. Default: <see cref="true"/>.
+        /// </summary>
+        [JsonPropertyName("readable")]
+        public bool IsReadable { get; set; } = true;
 
         /// <summary>
         /// True if the property is writeable; false, otherwise. Default: <see cref="true"/>.
         /// </summary>
-        [JsonProperty(PropertyName = "writable", Order = 6)]
+        [JsonPropertyName("writable")]
         public bool IsWritable { get; set; } = true;
 
-        [JsonProperty(
-            NullValueHandling = NullValueHandling.Ignore,
-            PropertyName = "property",
-            Order = 7)]
+        /// <summary>
+        /// The property's definition.
+        /// </summary>
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("property")]
         public Property? Property { get; set; }
 
-        /// <summary>
-        /// The property's title. Default: <see cref="null"/>.
-        /// </summary>
-        [JsonProperty(
-            NullValueHandling = NullValueHandling.Ignore,
-            PropertyName = "title",
-            Order = 3)]
-        public string? Title { get; set; }
+        
 
-        /// <summary>
-        /// The property's type: SupportedProperty.
-        /// </summary>
-        [JsonProperty(
-            NullValueHandling = NullValueHandling.Ignore,
-            PropertyName = "@type",
-            Order = 2)]
-        public string Type => "SupportedProperty";
+        
     }
 }

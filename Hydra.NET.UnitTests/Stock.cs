@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace Hydra.NET.UnitTests
 {
@@ -14,15 +14,7 @@ namespace Hydra.NET.UnitTests
             Symbol = symbol;
         }
 
-        [SupportedProperty(
-            "doc:Stock/currentPrice",
-            Xsd.Decimal,
-            Title = "Current price",
-            Description = "The current price of the stock.")]
-        [JsonProperty(PropertyName = "currentPrice", Order = 3)]
-        public double CurrentPrice { get; }
-
-        [JsonProperty(PropertyName = "@id", Order = 1)]
+        [JsonPropertyName("@id")]
         public Uri Id { get; }
 
         [SupportedProperty(
@@ -30,7 +22,15 @@ namespace Hydra.NET.UnitTests
             Xsd.String,
             Title = "Stock symbol",
             IsWritable = false)]
-        [JsonProperty(PropertyName = "symbol", Order = 2)]
+        [JsonPropertyName("symbol")]
         public string Symbol { get; }
+
+        [SupportedProperty(
+            "doc:Stock/currentPrice",
+            Xsd.Decimal,
+            Title = "Current price",
+            Description = "The current price of the stock.")]
+        [JsonPropertyName("currentPrice")]
+        public double CurrentPrice { get; }
     }
 }

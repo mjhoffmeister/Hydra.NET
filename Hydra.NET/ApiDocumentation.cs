@@ -1,33 +1,74 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 namespace Hydra.NET
 {
+    /// <summary>
+    /// Describes a web API.
+    /// For more info, see https://www.hydra-cg.com/spec/latest/core/#documenting-a-web-api.
+    /// </summary>
     public class ApiDocumentation
     {
         // Cached operation attributes
         private ILookup<Type, OperationAttribute>? _cachedOperationAttributes;
 
-        // Supported classes
-        private readonly List<SupportedClass> _supportedClasses = new List<SupportedClass>();
+        public ApiDocumentation() { }
 
-        public ApiDocumentation(Uri id) => (Context, Id) = (InitializeContext(), id);
+        public ApiDocumentation(Uri id) => Id = id;
 
-        [JsonProperty(PropertyName = "@context", Order = 1)]
-        public Context Context { get; private set; }
+        // TODO: make this more dynamic
+        [JsonPropertyName("@context")]
+        public Context Context { get; set; } = new Context(new Dictionary<string, Uri>()
+        {
+            { "hydra", new Uri("https://www.w3.org/ns/hydra/core#") },
+            { "rdf", new Uri("http://www.w3.org/1999/02/22-rdf-syntax-ns#") },
+            { "rdfs", new Uri("http://www.w3.org/2000/01/rdf-schema#") },
+            { "xsd", new Uri("http://www.w3.org/2001/XMLSchema#") },
+            { "ApiDocumentation", new Uri("hydra:ApiDocumentation") },
+            { "Class", new Uri("hydra:Class") },
+            { "Collection", new Uri("hydra:Collection") },
+            { "description", new Uri("hydra:description") },
+            { "memberAssertion", new Uri("hydra:memberAssertion") },
+            { "object", new Uri("hydra:object") },
+            { "Operation", new Uri("hydra:Operation") },
+            { "property", new Uri("hydra:property") },
+            { "range", new Uri("rdfs:range") },
+            { "readable", new Uri("hydra:readable") },
+            { "required", new Uri("hydra:required") },
+            { "supportedClass", new Uri("hydra:supportedClass") },
+            { "supportedOperation", new Uri("hydra:supportedOperation") },
+            { "supportedProperty", new Uri("hydra:supportedProperty") },
+            { "SupportedProperty", new Uri("hydra:SupportedProperty") },
+            { "title", new Uri("hydra:title") },
+            { "writable", new Uri("hydra:writable") }
+        });
 
-        [JsonProperty(PropertyName = "@id", Order = 2)]
-        public Uri Id { get; }
+        /// <summary>
+        /// The API documentation's id.
+        /// </summary>
+        [JsonPropertyName("@id")]
+        public Uri? Id { get; set; }
 
-        [JsonProperty(PropertyName = "supportedClass", Order = 4)]
-        public List<SupportedClass> SupportedClasses => _supportedClasses;
-
-        [JsonProperty(PropertyName = "@type", Order = 3)]
+        /// <summary>
+        /// The API documentation's type: ApiDocumentation.
+        /// </summary>
+        [JsonPropertyName("@type")]
         public string Type => "ApiDocumentation";
 
+        /// <summary>
+        /// Classes supported by the API.
+        /// </summary>
+        [JsonPropertyName("supportedClass")]
+        public List<SupportedClass> SupportedClasses { get; set; } = new List<SupportedClass>();
+
+        /// <summary>
+        /// Adds a supported class.
+        /// </summary>
+        /// <typeparam name="T">The type of a supported class.</typeparam>
+        /// <returns>The <see cref="ApiDocumentation"/> with the added class.</returns>
         public ApiDocumentation AddSupportedClass<T>()
         {
             // Get the type of the supported class to be added
@@ -64,7 +105,7 @@ namespace Hydra.NET
             supportedClass.SupportedOperations = GetSupportedOperations(type);
 
             // Add the supported class
-            _supportedClasses.Add(supportedClass);
+            SupportedClasses.Add(supportedClass);
 
             // Add a collection for the class, if specified
             TryAddSupportedCollection<T>(supportedClass.Id!, type);
@@ -75,7 +116,7 @@ namespace Hydra.NET
 
         /// <summary>
         /// Adds a supported collection for the type, if specified.
-        /// </summary>\
+        /// </summary>
         /// <param name="memberId">The id of collection member type.</param>
         /// <param name="type">Type.</param>
         /// <returns>True if collection documentation was added; false, otherwise.</returns>
@@ -98,7 +139,7 @@ namespace Hydra.NET
                 type, typeof(Collection<T>));
 
             // Add the collection to supported classes
-            _supportedClasses.Add(supportedCollection);
+            SupportedClasses.Add(supportedCollection);
             return true;
         }
 
@@ -126,34 +167,6 @@ namespace Hydra.NET
                 return null;
 
             return _cachedOperationAttributes[searchType].Select(a => new Operation(a));
-        }
-
-        private Context InitializeContext()
-        {
-            return new Context(new Dictionary<string, Uri>()
-            {
-                { "hydra", new Uri("https://www.w3.org/ns/hydra/core#") },
-                { "rdf", new Uri("http://www.w3.org/1999/02/22-rdf-syntax-ns#") },
-                { "rdfs", new Uri("http://www.w3.org/2000/01/rdf-schema#") },
-                { "xsd", new Uri("http://www.w3.org/2001/XMLSchema#") },
-                { "ApiDocumentation", new Uri("hydra:ApiDocumentation") },
-                { "Class", new Uri("hydra:Class") },
-                { "Collection", new Uri("hydra:Collection") },
-                { "description", new Uri("hydra:description") },
-                { "memberAssertion", new Uri("hydra:memberAssertion") },
-                { "object", new Uri("hydra:object") },
-                { "Operation", new Uri("hydra:Operation") },
-                { "property", new Uri("hydra:property") },
-                { "range", new Uri("rdfs:range") },
-                { "readable", new Uri("hydra:readable") },
-                { "required", new Uri("hydra:required") },
-                { "supportedClass", new Uri("hydra:supportedClass") },
-                { "supportedOperation", new Uri("hydra:supportedOperation") },
-                { "supportedProperty", new Uri("hydra:supportedProperty") },
-                { "SupportedProperty", new Uri("hydra:SupportedProperty") },
-                { "title", new Uri("hydra:title") },
-                { "writable", new Uri("hydra:writable") }
-            });
         }
     }
 }

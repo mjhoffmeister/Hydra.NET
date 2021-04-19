@@ -1,7 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿//using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using Xunit;
 
 namespace Hydra.NET.UnitTests
@@ -23,7 +24,11 @@ namespace Hydra.NET.UnitTests
 
             // Act
 
-            string jsonLD = JsonConvert.SerializeObject(apiDocumentation, Formatting.Indented);
+            //string jsonLD = JsonConvert.SerializeObject(apiDocumentation, Formatting.Indented);
+            string jsonLD = JsonSerializer.Serialize(apiDocumentation, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
 
             // Assert
 
@@ -37,12 +42,14 @@ namespace Hydra.NET.UnitTests
 
             string expectedSupportedClassId = "doc:Stock";
 
-            string apiDocumentationWithStockClassJsonLD = 
+            string apiDocumentationWithStockClassJsonLD =
                 File.ReadAllText("expected-api-documentation-with-stock.jsonld");
 
             // Act
 
-            ApiDocumentation apiDocumentation = JsonConvert.DeserializeObject<ApiDocumentation>(
+            //ApiDocumentation apiDocumentation = JsonConvert.DeserializeObject<ApiDocumentation>(
+            //    apiDocumentationWithStockClassJsonLD);
+            ApiDocumentation apiDocumentation = JsonSerializer.Deserialize<ApiDocumentation>(
                 apiDocumentationWithStockClassJsonLD);
 
             // Assert

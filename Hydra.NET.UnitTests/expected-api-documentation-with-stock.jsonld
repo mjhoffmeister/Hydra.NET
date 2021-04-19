@@ -34,6 +34,17 @@
       "supportedProperty": [
         {
           "@type": "SupportedProperty",
+          "title": "Stock symbol",
+          "required": true,
+          "readable": true,
+          "writable": false,
+          "property": {
+            "@id": "doc:Stock/symbol",
+            "range": "xsd:string"
+          }
+        },
+        {
+          "@type": "SupportedProperty",
           "title": "Current price",
           "description": "The current price of the stock.",
           "required": true,
@@ -42,17 +53,6 @@
           "property": {
             "@id": "doc:Stock/currentPrice",
             "range": "xsd:decimal"
-          }
-        },
-        {
-          "@type": "SupportedProperty",
-          "title": "Stock symbol",
-          "required": true,
-          "readable": true,
-          "writable": false,
-          "property": {
-            "@id": "doc:Stock/symbol",
-            "range": "xsd:string"
           }
         }
       ],

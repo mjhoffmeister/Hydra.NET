@@ -1,10 +1,17 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace Hydra.NET
 {
+    /// <summary>
+    /// Property definition.
+    /// TODO: specify property types such as Link, etc.
+    /// </summary>
     public class Property
     {
+        /// <summary>
+        /// Default constructor for deserialization.
+        /// </summary>
         public Property() { }
 
         /// <summary>
@@ -14,10 +21,10 @@ namespace Hydra.NET
         /// <param name="range">Range of the property.</param>
         internal Property(string id, string range) => (Id, Range) = (new Uri(id), new Uri(range));
 
-        [JsonProperty(PropertyName = "@id")]
+        [JsonPropertyName("@id")]
         public Uri? Id { get; set; }
 
-        [JsonProperty(PropertyName = "range")]
+        [JsonPropertyName("range")]
         public Uri? Range { get; set; } 
     }
 }

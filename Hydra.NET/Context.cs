@@ -1,9 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿//using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Hydra.NET
 {
+    /// <summary>
+    /// JSON-LD context.
+    /// For more info, see https://www.w3.org/2018/jsonld-cg-reports/json-ld/#the-context.
+    /// </summary>
     [JsonConverter(typeof(ContextJsonConverter))]
     public class Context
     {

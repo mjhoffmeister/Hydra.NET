@@ -1,8 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 
 namespace Hydra.NET
 {
+    /// <summary>
+    /// Designates the class as supported by the API.
+    /// </summary>
     public class SupportedClassAttribute : Attribute
     {
         /// <summary>
@@ -24,7 +26,6 @@ namespace Hydra.NET
         /// <summary>
         /// The class's id.
         /// </summary>
-        [JsonProperty(PropertyName = "@id", Order = 1)]
         public Uri Id { get; }
 
     }

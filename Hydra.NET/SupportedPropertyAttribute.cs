@@ -2,6 +2,9 @@
 
 namespace Hydra.NET
 {
+    /// <summary>
+    /// Designates the property as supported by a class.
+    /// </summary>
     public class SupportedPropertyAttribute : Attribute
     {
         /// <summary>
@@ -9,7 +12,8 @@ namespace Hydra.NET
         /// </summary>
         /// <param name="id">Id.</param>
         /// <param name="range">Range.</param>
-        public SupportedPropertyAttribute(string id, string range) => Property = new Property(id, range);
+        public SupportedPropertyAttribute(string id, string range) => 
+            Property = new Property(id, range);
 
         /// <summary>
         /// The property's description. Default: <see cref="null"/>.

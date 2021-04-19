@@ -1,23 +1,21 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace Hydra.NET
 {
     /// <summary>
     /// Declares additional, implicit statements about the members of a collection.
+    /// Note that according to the Hydra spec, two and only two of property, object, and subject
+    /// should be used.
+    /// For more info, see https://www.hydra-cg.com/spec/latest/core/#member-assertions.
     /// </summary>
     public class MemberAssertion
     {
         /// <summary>
-        /// Note that according to the Hydra spec, two and only two of property, object, and subject
-        /// should be used. See https://www.hydra-cg.com/spec/latest/core/#member-assertions.
+        /// Default constructor for deserialization.
         /// </summary>
         public MemberAssertion() { }
 
-        /// <summary>
-        /// Note that according to the Hydra spec, two and only two of property, object, and subject
-        /// should be used. See https://www.hydra-cg.com/spec/latest/core/#member-assertions.
-        /// </summary>
         public MemberAssertion(Uri? property = null, Uri? @object = null, Uri? subject = null)
         {
             Property = property;
@@ -25,13 +23,16 @@ namespace Hydra.NET
             Subject = subject;
         }
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "property")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("property")]
         public Uri? Property { get; set; }
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "object")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("object")]
         public Uri? Object { get; set; }
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "subject")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("subject")]
         public Uri? Subject { get; set; }
     }
 }

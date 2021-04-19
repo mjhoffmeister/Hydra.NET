@@ -1,5 +1,8 @@
 ﻿namespace Hydra.NET
 {
+    /// <summary>
+    /// Constant string values for XSD types.
+    /// </summary>
     public static class Xsd
     {
         public const string Decimal = "xsd:decimal";
