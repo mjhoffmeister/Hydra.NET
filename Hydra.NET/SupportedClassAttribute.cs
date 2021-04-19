@@ -5,6 +5,7 @@ namespace Hydra.NET
     /// <summary>
     /// Designates the class as supported by the API.
     /// </summary>
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]  
     public class SupportedClassAttribute : Attribute
     {
         /// <summary>

@@ -5,6 +5,7 @@ namespace Hydra.NET
     /// <summary>
     /// Designates the property as supported by a class.
     /// </summary>
+    [AttributeUsage(AttributeTargets.Property)]
     public class SupportedPropertyAttribute : Attribute
     {
         /// <summary>

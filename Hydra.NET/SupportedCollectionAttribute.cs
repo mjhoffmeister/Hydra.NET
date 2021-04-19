@@ -8,6 +8,7 @@ namespace Hydra.NET
     /// library as a convention.
     /// For more info, see https://www.hydra-cg.com/spec/latest/core/#collections.
     /// </summary>
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]  
     public class SupportedCollectionAttribute : Attribute
     {
         public SupportedCollectionAttribute(string id) => Id = new Uri(id);

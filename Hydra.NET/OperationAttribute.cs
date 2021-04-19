@@ -5,6 +5,7 @@ namespace Hydra.NET
     /// <summary>
     /// Designates an operation supported by instances of a class.
     /// </summary>
+    [AttributeUsage(AttributeTargets.Method)]  
     public class OperationAttribute : Attribute
     {
         /// <summary>

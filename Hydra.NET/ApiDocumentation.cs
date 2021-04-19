@@ -132,11 +132,11 @@ namespace Hydra.NET
 
             // Create a SupportedCollection object from the attribute
             var supportedCollection = new SupportedCollection(
-                memberId, supportedCollectionAttribute);
-
-            // Add supported operations
-            supportedCollection.SupportedOperations = GetSupportedOperations(
-                type, typeof(Collection<T>));
+                memberId, supportedCollectionAttribute)
+            {
+                SupportedOperations = GetSupportedOperations(
+                    type, typeof(Collection<T>))
+            };
 
             // Add the collection to supported classes
             SupportedClasses.Add(supportedCollection);
