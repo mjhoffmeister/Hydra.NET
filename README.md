@@ -2,8 +2,6 @@
 
 Hydra.NET is a simple library that provides building blocks for creating hypermedia-driven web APIs with the [Hydra specification](https://www.hydra-cg.com/spec/latest/core/).
 
-
-
 ## Usage
 
 ### Supported classes
@@ -177,7 +175,7 @@ Operations are automatically discovered for their associated types. Given the ab
   ]
 }
 ```
-# Contribute
+## Contribute
 
 Hydra.NET is a project I created for use in my personal projects without much expectation that others would be interested. Nevertheless, pull requests and issues are welcome. I've only implemented the parts of the Hydra spec that I've needed, and my understanding of Hydra and JSON-LD is certainly incomplete.
 
