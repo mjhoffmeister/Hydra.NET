@@ -6,7 +6,7 @@
     <Version>1.0.0-beta1</Version>
     <PackageProjectUrl>https://github.com/mjhoffmeister/Hydra.NET</PackageProjectUrl>
     <Authors>Matt Hoffmeister</Authors>
-    <PackageLicenseExpression>https://licenses.nuget.org/MIT</PackageLicenseExpression>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>Hydra.NET is a simple library that provides building blocks for creating hypermedia-driven web APIs with the Hydra specification.
 </Description>
   </PropertyGroup>
