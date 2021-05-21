@@ -1,8 +1,24 @@
 # Hydra.NET
 
-Hydra.NET is a simple library that provides building blocks for creating hypermedia-driven web APIs with the [Hydra specification](https://www.hydra-cg.com/spec/latest/core/).
+Hydra.NET is a simple library for .NET that provides building blocks for creating hypermedia-driven web APIs with the [Hydra specification](https://www.hydra-cg.com/spec/latest/core/).
 
-## Usage
+## Quickstart
+
+### Create an ASP.NET application
+
+### Install the Hydra.NET library
+
+### Define the Home resource
+
+### Define the Help resource
+
+### Define the Blog resource
+
+### Define the Article resource
+
+### Define the Comment resource
+
+## General Usage
 
 ### Supported classes
 
@@ -39,7 +55,7 @@ public class Stock
     public double CurrentPrice { get; }
 }
 ```
-### Collections
+### Supported Collections
 
 If you'd like to document a collection for a supported class, you can do so by additionally decorating it with `[SupportedCollection]`.
 
@@ -51,7 +67,7 @@ public class Stock
     // Class code here
 }
 ```
-### Supported operations
+### Supported Operations
 
 Supported operations for a class are designated by decorating methods with `[Operation]`.
 
@@ -71,7 +87,7 @@ public class StocksController
     }
 }
 ```
-### API documentation
+### API Documentation
 
 The `ApiDocumentation` class is the central documentation source for a Hydra web API. Add your supported classes to it via the `AddSupportedClass<T>()` method.
 
@@ -175,7 +191,10 @@ Operations are automatically discovered for their associated types. Given the ab
   ]
 }
 ```
-## Contribute
+
+## Contributing
 
 Hydra.NET is a project I created for use in my personal projects without much expectation that others would be interested. Nevertheless, pull requests and issues are welcome. I've only implemented the parts of the Hydra spec that I've needed, and my understanding of Hydra and JSON-LD is certainly incomplete.
+
+
 
