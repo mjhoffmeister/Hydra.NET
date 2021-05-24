@@ -4,13 +4,100 @@ Hydra.NET is a simple library for .NET that provides building blocks for creatin
 
 ## Quickstart
 
+This quickstart will show you how to create a basic ASP.NET Hydra Service using the .NET 5 SDK and VS Code.
+
+### Overview 
+
+This tutorial creates the following API:
+| Resource | Operation                       | Description                              |
+|----------|---------------------------------|------------------------------------------|
+| Home     | GET /api/home                   | Get info for entry point resource        |
+| Help     | GET /api/help                   | Get info for api doc resource            |
+| Blog     | GET /api/blog                   | Get list for blog resource               |
+| Blog     | POST /api/blog                  | Add a blog to list for blog resource     |
+| Blog     | GET /api/blog/{blogId}          | Get info for blog resource               |
+| Blog     | PUT /api/blog/{blogId}          | Replace info for blog resource           |
+| Blog     | DELETE /api/blog/{blogId}       | Delete info for blog resource            |
+| Article  | GET /api/article                | |
+| Article  | POST /api/article               | |
+| Article  | GET /api/article/{articleId}    | |
+| Article  | PUT /api/article/{articleId}    | |
+| Article  | DELETE /api/article/{articleId} | |
+| Comment  | GET /api/comment/{commentId}    | |
+| Comment  | POST /api/comment/{commentId}   | |
+| Comment  | GET /api/comment/{commentId}    | |
+| Comment  | PUT /api/comment/{commentId}    | |
+| Comment  | DELETE /api/comment/{commentId} | |
+
 ### Create an ASP.NET application
 
-### Install the Hydra.NET library
+In a terminal, execute the following to create an ASP.NET project using the Web API template
+```
+dotnet new web --name MyHydraService
+```
+
+Execute the following to change into the project directory to work within the project
+```
+cd MyHydraService
+```
+
+### Install the Hydra.NET library and the JsonLD.Entities library
+
+Execute the following to install the Hydra.NET library (currently only available as a prerelease)
+```
+dotnet add package Hydra.NET --prerelease
+```
+
+Execute the following to install the JsonLd.Entities library
+```
+dotnet add package JsonLd.Entities
+```
+
+### Review folder structure
+
+Execute the following to open the project in VS Code so we can start browsing and editing the source
+```
+code .
+```
+
+Take a look at the folder structure from the VS Code File Explorer. You should see a structure that looks like the following:
+
+| Content                     | Description |
+|-----------------------------|-------------|
+| bin/                        ||                           
+| obj/                        ||
+|Properties                   ||
+|appsettings.Development.json ||
+|appsettings.json             ||
+|ExampleHydraService.csproj   ||
+|Program.cs                   ||
+|Startup.cs                   ||
+
+Create a new folder named 'Resources' where we will place the code for each of the Resources managed by our API
 
 ### Define the Home resource
 
+Under Resources, create a new file called 'Home.cs'
+
+Define a namespace on line 1
+
+Define a class to represent the info for the Home resource
+
+Define a controller to orchestrate the requests for the Home resource
+
+Verify that the code works
+
 ### Define the Help resource
+
+Under Resources, create a new file called 'Help.cs'
+
+Define a namespace on line 1
+
+Define a class to represent the info for the Help resource
+
+Define a controller to orchestrate the requests for the Help resource
+
+Verify that the code works
 
 ### Define the Blog resource
 
