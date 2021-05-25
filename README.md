@@ -1,115 +1,455 @@
 # Hydra.NET
 
-Hydra.NET is a simple library for .NET that provides building blocks for creating hypermedia-driven web APIs with the [Hydra specification](https://www.hydra-cg.com/spec/latest/core/).
+Hydra.NET is a simple library for ASP.NET that provides the building blocks necessary for creating hypermedia-driven Web APIs using the [Hydra specification](https://www.hydra-cg.com/spec/latest/core/).
 
 ## Quickstart
 
-This quickstart will show you how to create a basic ASP.NET Hydra Service using the .NET 5 SDK and VS Code.
+This quickstart will show you how to create a basic Hello World ASP.NET Hydra Service with the following endpoints:
+| Resource   | Operation      | Description                       |
+|------------|----------------|-----------------------------------|
+| EntryPoint | GET /api       | Get info for Entry Point resource |
+| ApiDoc     | GET /api/doc   | Get info for Api Doc resource     |
+| Hello      | GET /api/hello | Get info for Hello resource       |
 
-### Overview 
-
-This tutorial creates the following API:
-| Resource | Operation                       | Description                              |
-|----------|---------------------------------|------------------------------------------|
-| Home     | GET /api/home                   | Get info for entry point resource        |
-| Help     | GET /api/help                   | Get info for api doc resource            |
-| Blog     | GET /api/blog                   | Get list for blog resource               |
-| Blog     | POST /api/blog                  | Add a blog to list for blog resource     |
-| Blog     | GET /api/blog/{blogId}          | Get info for blog resource               |
-| Blog     | PUT /api/blog/{blogId}          | Replace info for blog resource           |
-| Blog     | DELETE /api/blog/{blogId}       | Delete info for blog resource            |
-| Article  | GET /api/article                | |
-| Article  | POST /api/article               | |
-| Article  | GET /api/article/{articleId}    | |
-| Article  | PUT /api/article/{articleId}    | |
-| Article  | DELETE /api/article/{articleId} | |
-| Comment  | GET /api/comment/{commentId}    | |
-| Comment  | POST /api/comment/{commentId}   | |
-| Comment  | GET /api/comment/{commentId}    | |
-| Comment  | PUT /api/comment/{commentId}    | |
-| Comment  | DELETE /api/comment/{commentId} | |
+### Pre-requisites
+- Git
+- .NET 5 SDK
+- VS Code, VS IDE, or Rider
 
 ### Create an ASP.NET application
 
-In a terminal, execute the following to create an ASP.NET project using the Web API template
+In a terminal, execute the following to create an ASP.NET project using the Web template:
 ```
-dotnet new web --name MyHydraService
-```
-
-Execute the following to change into the project directory to work within the project
-```
-cd MyHydraService
+dotnet new web --name HelloHydraService
 ```
 
-### Install the Hydra.NET library and the JsonLD.Entities library
+Execute the following to change into the project directory to work within the project:
+```
+cd HelloHydraService
+```
 
-Execute the following to install the Hydra.NET library (currently only available as a prerelease)
+### Install package dependencies
+
+Execute the following to install the Hydra.NET library (currently only available as a prerelease) which we will use to generate the Hydra Api Doc:
 ```
 dotnet add package Hydra.NET --prerelease
 ```
 
-Execute the following to install the JsonLd.Entities library
+Execute the following to install the JsonLd.Entities library which we will use to generate the JSON-LD Context (Hydra builds on top of JSON-LD):
 ```
 dotnet add package JsonLd.Entities
 ```
 
-### Review folder structure
+Execute the following to install the Newtonsoft.Json library which is a dependency of JsonLd.Entities (there is a plan to update this to System.Text.Json):
+```
+dotnet add package Newtonsoft.Json
+```
 
-Execute the following to open the project in VS Code so we can start browsing and editing the source
+### Configure Startup
+
+Execute the following to open the project in VS Code so we can start browsing and editing the source:
 ```
 code .
 ```
 
-Take a look at the folder structure from the VS Code File Explorer. You should see a structure that looks like the following:
+Open the 'Startup.cs' file and replace the contents with the following:
+```csharp
+namespace HelloHydraService
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Http;
 
-| Content                     | Description |
-|-----------------------------|-------------|
-| bin/                        ||                           
-| obj/                        ||
-|Properties                   ||
-|appsettings.Development.json ||
-|appsettings.json             ||
-|ExampleHydraService.csproj   ||
-|Program.cs                   ||
-|Startup.cs                   ||
+    public class Startup
+    {
+        public void ConfigureServices(IServiceCollection svc)
+        {
+            svc.AddControllers();
+        }
 
-Create a new folder named 'Resources' where we will place the code for each of the Resources managed by our API
+        public void Configure(IApplicationBuilder app)
+        {
+            app.UseRouting();
+            app.UseEndpoints(ept =>
+            {
+                ept.MapControllers();
+            });
+        }
+    }
+}
+```
 
-### Define the Home resource
+Now go ahead and create a new folder named 'Resources' where we will place the source for each of the Resources managed by our API
 
-Under Resources, create a new file called 'Home.cs'
 
-Define a namespace on line 1
+### Define the ApiDoc resource
 
-Define a class to represent the info for the Home resource
+The first resource we are going to define is the ApiDoc resource, which is specified by Hydra to serve as a reference to the rest of the API for the benefit of clients. For the most part, the ApiDoc is automatically generated by Hydra.NET, so let's go ahead and implement the resource to see what the output looks like.
 
-Define a controller to orchestrate the requests for the Home resource
+Under 'Resources', create a new file called 'ApiDoc.cs' and enter the following:
+```
+namespace HelloHydraService.Resources.Help
+{
+  using System;
+  using Microsoft.AspNetCore.Mvc;
+  using Hydra.NET;
 
-Verify that the code works
+  [ApiController]
+  public class HelpInfoController
+  {
+    [HttpGet("/api/doc")]
+    public IActionResult GetInfo()
+    {
+      var info = new ApiDocumentation(new Uri("/api/doc", UriKind.RelativeOrAbsolute));
 
-### Define the Help resource
+      return new OkObjectResult(info);
+    }
+  }
+}
+```
 
-Under Resources, create a new file called 'Help.cs'
+Launch the debugger and in the browser, navigate to `http://localhost:5000/api/doc` to verify that the output looks like:
+```
+{
+  "@context": {
+    "hydra": "https://www.w3.org/ns/hydra/core#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "ApiDocumentation": "hydra:ApiDocumentation",
+    "Class": "hydra:Class",
+    "Collection": "hydra:Collection",
+    "description": "hydra:description",
+    "memberAssertion": "hydra:memberAssertion",
+    "object": "hydra:object",
+    "Operation": "hydra:Operation",
+    "property": "hydra:property",
+    "range": "rdfs:range",
+    "readable": "hydra:readable",
+    "required": "hydra:required",
+    "supportedClass": "hydra:supportedClass",
+    "supportedOperation": "hydra:supportedOperation",
+    "supportedProperty": "hydra:supportedProperty",
+    "SupportedProperty": "hydra:SupportedProperty",
+    "title": "hydra:title",
+    "writable": "hydra:writable"
+  },
+  "@id": "/api/doc",
+  "@type": "ApiDocumentation",
+  "supportedClass": []
+}
+```
 
-Define a namespace on line 1
+You now have a working ApiDoc resource.
 
-Define a class to represent the info for the Help resource
+### Define the EntryPoint resource
 
-Define a controller to orchestrate the requests for the Help resource
+The second resource we are going to define is the EntryPoint resource, which is the root of our API and contains links to all the other top level API resources. The info for the EntryPoint resource should be represented like this:
+```
+{
+  "@id": "/api",
+  "@type": "EntryPoint",
+  "@context": "/api/doc",
+  "helloInfo": ""
+}
+```
 
-Verify that the code works
+Under 'Resources/', create a new file called 'EntryPoint.cs' and enter the following:
+```
+namespace HelloHydraService.Resources.EntryPoint
+{
+  using System;
+  using System.Dynamic;
+  using System.Threading.Tasks;
+  using System.Collections.Generic;
+  using System.Text.Json;
+  using System.Text.Json.Serialization;
+  using Microsoft.AspNetCore.Mvc;
+  using JsonLD.Entities.Context;
+  using Hydra.NET;
 
-### Define the Blog resource
+  [SupportedClass("doc:EntryPoint", Title = "EntryPoint", Description = "Represents the EntryPoint Info")]
+  public class EntryPointInfo
+  {
+    [JsonPropertyName("@id")]
+    public Uri Id { get; set; }
 
-### Define the Article resource
+    [JsonPropertyName("@type")]
+    public string Type { get; set; }  
 
-### Define the Comment resource
+    [JsonPropertyName("@context")]
+    public Object Context { get; set; }
 
-## General Usage
+    public string HelloInfo { get; set; }
+  }
 
-### Supported classes
+  [ApiController]
+  public class EntryPointController
+  {
+    [HttpGet("/api")]
+    [Operation(typeof(EntryPointInfo), Title = "Query EntryPoint Info", Method = Method.Get)]
+    public IActionResult QueryInfo()
+    {
+      var info = new EntryPointInfo
+      {
+        Id = new Uri("/api", UriKind.RelativeOrAbsolute),
+        Type = "EntryPoint",
+        Context = new VocabContext<EntryPointInfo>("/api/doc#").ToObject<ExpandoObject>(),
+        HelloInfo = "/api/hello"
+      };
 
-Designate classes supported by the API by decorating them with `[SupportedClass]`. Specify their supported properties with `[SupportedProperty]`.
+      return new OkObjectResult(info);
+    }
+  }
+}
+```
+
+Launch the debugger and in the browser, navigate to `http://localhost:5000/api` to verify that the output looks like:
+```
+{
+  "@id": "/api",
+  "@type": "EntryPoint",
+  "@context": {
+    "helloInfo": "/api/doc#helloInfo"
+  },
+  "helloInfo": "/api/hello"
+}
+```
+
+You now have a way to query to info for the EntryPoint resource, but in order to ensure that the API is discoverable, we still need to register the EntryPoint resource with the ApiDoc resource. Update the 'ApiDoc.cs' file to match the following:
+```
+namespace HelloHydraService.Resources.ApiDoc
+{
+  using System;
+  using Microsoft.AspNetCore.Mvc;
+  using Hydra.NET;
+
+  using Resources.EntryPoint;
+
+  [ApiController]
+  public class HelpInfoController
+  {
+    [HttpGet("/api/doc")]
+    public IActionResult GetInfo()
+    {
+      var info = new ApiDocumentation(new Uri("/api/doc", UriKind.RelativeOrAbsolute));
+
+      info.AddSupportedClass<EntryPointInfo>();
+
+      return new OkObjectResult(info);
+    }
+  }
+}
+```
+
+Launch the debugger and in the browser, navigate to 'http://localhost:5000/api/doc' to verify that the output looks like:
+```
+{
+  "@context": {
+    "hydra": "https://www.w3.org/ns/hydra/core#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "ApiDocumentation": "hydra:ApiDocumentation",
+    "Class": "hydra:Class",
+    "Collection": "hydra:Collection",
+    "description": "hydra:description",
+    "memberAssertion": "hydra:memberAssertion",
+    "object": "hydra:object",
+    "Operation": "hydra:Operation",
+    "property": "hydra:property",
+    "range": "rdfs:range",
+    "readable": "hydra:readable",
+    "required": "hydra:required",
+    "supportedClass": "hydra:supportedClass",
+    "supportedOperation": "hydra:supportedOperation",
+    "supportedProperty": "hydra:supportedProperty",
+    "SupportedProperty": "hydra:SupportedProperty",
+    "title": "hydra:title",
+    "writable": "hydra:writable"
+  },
+  "@id": "/api/doc",
+  "@type": "ApiDocumentation",
+  "supportedClass": [
+    {
+      "@id": "doc:EntryPoint",
+      "@type": "Class",
+      "title": "EntryPoint",
+      "description": "Represents the EntryPoint Info",
+      "supportedOperation": [
+        {
+          "@type": "Operation",
+          "title": "Query EntryPoint Info",
+          "method": "GET"
+        }
+      ]
+    }
+  ]
+}
+```
+
+You now have a way to query the info for the EntryPoint resource aswell as a way to discover the EntryPoint resource.
+
+### Define the Hello resource
+
+The last resource we will define in this quickstart is the Hello resource. The Hello resource is simply a toy example resource that is responsible for greeting a user with a 'Hello' message.
+
+Under 'Resources/', create a file called 'Hello.cs' and enter the following:
+```
+namespace HelloHydraService.Resources.Hello
+{
+  using System;
+  using System.Dynamic;
+  using System.Threading.Tasks;
+  using System.Collections.Generic;
+  using System.Text.Json;
+  using System.Text.Json.Serialization;
+  using Microsoft.AspNetCore.Mvc;
+  using JsonLD.Entities.Context;
+  using Hydra.NET;
+
+  [SupportedClass("doc:Hello")]
+  public class HelloInfo
+  {
+    [JsonPropertyName("@id")]
+    public Uri Id { get; set; }
+    [JsonPropertyName("@type")]
+    public string Type { get; set; }
+    [JsonPropertyName("@context")]
+    public object Context { get; set; }
+    
+    public string Message { get; set; }
+  }
+
+  [ApiController]
+  public class HelloController
+  {
+    [HttpGet("/api/hello")]
+    [Operation(typeof(HelloInfo), Title = "Query Hello Info", Method = Method.Get)]
+    public IActionResult QueryHelloInfo()
+    {
+      var info = new HelloInfo 
+      {
+        Id = new Uri("/api/hello", UriKind.RelativeOrAbsolute),
+        Type = "Class",
+        Context = new VocabContext<HelloInfo>("/api/doc#").ToObject<ExpandoObject>(),
+        Message = "Hello"
+      };
+
+      return new OkObjectResult(info);
+    }
+  }
+}
+```
+
+Launch the debugger and in the browser, navigate to `http://localhost:5000/api/hello` to verify the output:
+```
+{
+  "@id": "/api/hello",
+  "@type": "Class",
+  "@context": {
+    "message": "/api/doc#message"
+  },
+  "message": "Hello"
+}
+```
+
+You now have a way to query the info for the Home resource, but to ensure that it is discoverable, we need to register the Hello resource with the Api Doc resource. Update the 'ApiDoc.cs' file to match the following:
+```
+namespace Resources.ApiDoc
+{
+  using System;
+  using Microsoft.AspNetCore.Mvc;
+  using Hydra.NET;
+
+  using Resources.EntryPoint;
+  using Resources.Hello;
+
+  [ApiController]
+  public class HelpInfoController
+  {
+    [HttpGet("/api/doc")]
+    public IActionResult GetInfo()
+    {
+      var info = new ApiDocumentation(new Uri("/api/doc", UriKind.RelativeOrAbsolute));
+
+      info.AddSupportedClass<EntryPointInfo>();
+      info.AddSupportedClass<HelloInfo>();
+
+      return new OkObjectResult(info);
+    }
+  }
+}
+```
+
+Launch the debugger and in the browser, navigate to `http://localhost:5000/api/doc` to verify the output:
+```
+{
+  "@context": {
+    "hydra": "https://www.w3.org/ns/hydra/core#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "ApiDocumentation": "hydra:ApiDocumentation",
+    "Class": "hydra:Class",
+    "Collection": "hydra:Collection",
+    "description": "hydra:description",
+    "memberAssertion": "hydra:memberAssertion",
+    "object": "hydra:object",
+    "Operation": "hydra:Operation",
+    "property": "hydra:property",
+    "range": "rdfs:range",
+    "readable": "hydra:readable",
+    "required": "hydra:required",
+    "supportedClass": "hydra:supportedClass",
+    "supportedOperation": "hydra:supportedOperation",
+    "supportedProperty": "hydra:supportedProperty",
+    "SupportedProperty": "hydra:SupportedProperty",
+    "title": "hydra:title",
+    "writable": "hydra:writable"
+  },
+  "@id": "/api/doc",
+  "@type": "ApiDocumentation",
+  "supportedClass": [
+    {
+      "@id": "doc:EntryPoint",
+      "@type": "Class",
+      "supportedOperation": [
+        {
+          "@type": "Operation",
+          "title": "Query EntryPoint Info",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "@id": "doc:Hello",
+      "@type": "Class",
+      "supportedOperation": [
+        {
+          "@type": "Operation",
+          "title": "Query Hello Info",
+          "method": "GET"
+        }
+      ]
+    }
+  ]
+}
+```
+
+You now have a way to query the info for the Hello resource aswell as a way to discover the Hello resource.
+## Reference
+
+### Supported Classes
+
+To describe a Hydra Supported Class, decorate the model type that represents a resource with the `[SupportedClass]` attribute. Describe the supported properties with the `[SupportedProperty]` attribute.
 
 ```csharp
 [SupportedClass("doc:Stock", Title = "Stock", Description = "Represents a stock.")]
@@ -144,7 +484,7 @@ public class Stock
 ```
 ### Supported Collections
 
-If you'd like to document a collection for a supported class, you can do so by additionally decorating it with `[SupportedCollection]`.
+To describe a Hydra Supported Collection, decorate the model type that represents an item in the collection with the `[SupportedCollection]` attribute.
 
 ```csharp
 [SupportedClass("doc:Stock", Title = "Stock", Description = "Represents a stock.")]
@@ -156,7 +496,7 @@ public class Stock
 ```
 ### Supported Operations
 
-Supported operations for a class are designated by decorating methods with `[Operation]`.
+To describe Hydra Supported Operations, decorate the controller method that represents the operation with the  `[Operation]` attribute.
 
 ```csharp
 public class StocksController
@@ -174,9 +514,9 @@ public class StocksController
     }
 }
 ```
-### API Documentation
+### Api Documentation
 
-The `ApiDocumentation` class is the central documentation source for a Hydra web API. Add your supported classes to it via the `AddSupportedClass<T>()` method.
+The `ApiDocumentation` class is the central documentation source for a Hydra Web API. Add your supported classes to it via the `AddSupportedClass<T>()` method.
 
 ```csharp
 // Create a new API documentation
@@ -186,10 +526,11 @@ var apiDocumentation = new ApiDocumentation(new Uri("https://api.example.com/doc
 apiDocumentation.AddSupportedClass<Stock>();
 ```
 
-The [context](https://www.w3.org/2018/jsonld-cg-reports/json-ld/#the-context) of `ApiDocumentation` instances is initialized with with Hydra, RDF, RDFS, and XSD mappings. Future versions of Hydra.NET may make this more dynamic. Nevertheless, you can add your own context mappings:
+The [context](https://www.w3.org/2018/jsonld-cg-reports/json-ld/#the-context) of `ApiDocumentation` instances is initialized with Hydra, RDF, RDFS, and XSD mappings. Future versions of Hydra.NET may make this more dynamic. Nevertheless, you can add your own context mappings:
 ```csharp
 apiDocumentation.Context.TryAddMapping("doc", new Uri("https://api.example.com/doc#"));
 ```
+
 Operations are automatically discovered for their associated types. Given the above examples, the result of serializing `apiDocumentation` will be the following JSON-LD:
 ```json
 {
