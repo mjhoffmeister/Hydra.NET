@@ -447,7 +447,7 @@ Launch the debugger and in the browser, navigate to `http://localhost:5000/api/d
 You now have a way to query the info for the Hello resource aswell as a way to discover the Hello resource.
 ## Reference
 
-### Supported Classes
+### API Resources and the Hydra Class
 
 To describe a Hydra Supported Class, decorate the model type that represents a resource with the `[SupportedClass]` attribute. Describe the supported properties with the `[SupportedProperty]` attribute.
 
@@ -482,7 +482,7 @@ public class Stock
     public double CurrentPrice { get; }
 }
 ```
-### Supported Collections
+### API Collections and the Hydra Collection
 
 To describe a Hydra Supported Collection, decorate the model type that represents an item in the collection with the `[SupportedCollection]` attribute.
 
@@ -494,7 +494,7 @@ public class Stock
     // Class code here
 }
 ```
-### Supported Operations
+### API Operations and the Hydra Operation
 
 To describe Hydra Supported Operations, decorate the controller method that represents the operation with the  `[Operation]` attribute.
 
@@ -514,7 +514,7 @@ public class StocksController
     }
 }
 ```
-### Api Documentation
+### API Documentation and the Hydra ApiDocumentation
 
 The `ApiDocumentation` class is the central documentation source for a Hydra Web API. Add your supported classes to it via the `AddSupportedClass<T>()` method.
 
