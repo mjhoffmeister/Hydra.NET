@@ -11,6 +11,8 @@ This quickstart will show you how to create a basic Hello World ASP.NET Hydra Se
 | ApiDoc     | GET /api/doc   | Get info for Api Doc resource     |
 | Hello      | GET /api/hello | Get info for Hello resource       |
 
+Full code for the finished quickstart is available at [Hydra.NET.Examples/HelloHydraService](https://github.com/lambdakris/Hydra.NET.Examples/tree/main/HelloHydraService)
+
 ### Pre-requisites
 - Git
 - .NET 5 SDK
