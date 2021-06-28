@@ -7,8 +7,9 @@ namespace Hydra.NET.UnitTests
     [SupportedCollection("doc:StockCollection", Title = "Stocks", Description = "Stock listing")]
     public class Stock
     {
-        public Stock(Uri id, string symbol, double currentPrice)
+        public Stock(Uri id, string symbol, double currentPrice, string category)
         {
+            Category = category;
             CurrentPrice = currentPrice;
             Id = id;
             Symbol = symbol;
@@ -32,5 +33,12 @@ namespace Hydra.NET.UnitTests
             Description = "The current price of the stock.")]
         [JsonPropertyName("currentPrice")]
         public double CurrentPrice { get; }
+
+        [SupportedProperty(
+            "doc:Stock/category",
+            Xsd.String,
+            Title = "Category",
+            IsRequired = false)]
+        public string? Category { get; }
     }
 }

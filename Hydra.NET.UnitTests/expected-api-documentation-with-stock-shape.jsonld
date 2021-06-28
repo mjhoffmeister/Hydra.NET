@@ -1,0 +1,122 @@
+{
+  "@context": {
+    "hashi": "http://www.w3.org/ns/shacl#",
+    "hydra": "https://www.w3.org/ns/hydra/core#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "ApiDocumentation": "hydra:ApiDocumentation",
+    "Class": "hydra:Class",
+    "Collection": "hydra:Collection",
+    "description": "hydra:description",
+    "in": "hashi:in",
+    "memberAssertion": "hydra:memberAssertion",
+    "object": "hydra:object",
+    "NodeShape": "hashi:NodeType",
+    "Operation": "hydra:Operation",
+    "path": "hashi:path",
+    "property": "hydra:property",
+    "propertyShape": "hashi:property",
+    "range": "rdfs:range",
+    "readable": "hydra:readable",
+    "required": "hydra:required",
+    "supportedClass": "hydra:supportedClass",
+    "supportedOperation": "hydra:supportedOperation",
+    "supportedProperty": "hydra:supportedProperty",
+    "SupportedProperty": "hydra:SupportedProperty",
+    "targetClass": "hashi:targetClass",
+    "title": "hydra:title",
+    "writable": "hydra:writable",
+    "doc": "https://api.example.com/doc#"
+  },
+  "@id": "https://api.example.com/doc",
+  "@type": "ApiDocumentation",
+  "extension": "http://www.w3.org/ns/shacl#",
+  "supportedClass": [
+    {
+      "@id": "doc:Stock",
+      "@type": "Class",
+      "title": "Stock",
+      "description": "Represents a stock.",
+      "supportedProperty": [
+        {
+          "@type": "SupportedProperty",
+          "title": "Stock symbol",
+          "required": true,
+          "readable": true,
+          "writable": false,
+          "property": {
+            "@id": "doc:Stock/symbol",
+            "range": "xsd:string"
+          }
+        },
+        {
+          "@type": "SupportedProperty",
+          "title": "Current price",
+          "description": "The current price of the stock.",
+          "required": true,
+          "readable": true,
+          "writable": true,
+          "property": {
+            "@id": "doc:Stock/currentPrice",
+            "range": "xsd:decimal"
+          }
+        },
+        {
+          "@type": "SupportedProperty",
+          "title": "Category",
+          "description": "The stock's category'",
+          "required": false,
+          "readable": true,
+          "writable": true,
+          "property": {
+            "@id": "doc:Stock/category",
+            "range": "xsd:string"
+          }
+        }
+      ],
+      "supportedOperation": [
+        {
+          "@type": "Operation",
+          "title": "Add stock",
+          "method": "Post",
+          "expects": {
+            "@type": "NodeShape",
+            "targetClass": "doc:Stock",
+            "propertyShape": [
+              {
+                "path": "doc:Stock/category",
+                "in": [
+                  "Blue chip",
+                  "Speculative",
+                  "Growth",
+                  "Value",
+                  "Income",
+                  "Penny",
+                  "Cyclical"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "@id": "doc:StockCollection",
+      "@type": "Collection",
+      "title": "Stocks",
+      "description": "Stock listing",
+      "memberAssertion": {
+        "property": "rdf:type",
+        "object": "doc:Stock"
+      },
+      "supportedOperation": [
+        {
+          "@type": "Operation",
+          "title": "List stocks",
+          "method": "GET"
+        }
+      ]
+    }
+  ]
+}

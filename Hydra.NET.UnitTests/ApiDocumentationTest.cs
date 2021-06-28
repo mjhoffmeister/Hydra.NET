@@ -24,7 +24,6 @@ namespace Hydra.NET.UnitTests
 
             // Act
 
-            //string jsonLD = JsonConvert.SerializeObject(apiDocumentation, Formatting.Indented);
             string jsonLD = JsonSerializer.Serialize(apiDocumentation, new JsonSerializerOptions
             {
                 WriteIndented = true
@@ -47,16 +46,54 @@ namespace Hydra.NET.UnitTests
 
             // Act
 
-            //ApiDocumentation apiDocumentation = JsonConvert.DeserializeObject<ApiDocumentation>(
-            //    apiDocumentationWithStockClassJsonLD);
-            ApiDocumentation apiDocumentation = JsonSerializer.Deserialize<ApiDocumentation>(
+            ApiDocumentation? apiDocumentation = JsonSerializer.Deserialize<ApiDocumentation>(
                 apiDocumentationWithStockClassJsonLD);
 
             // Assert
 
             Assert.Equal(
                 expectedSupportedClassId,
-                apiDocumentation.SupportedClasses.First().Id.ToString());
+                apiDocumentation?.SupportedClasses?.First()?.Id?.ToString());
+        }
+
+        [Fact]
+        public static void Serialize_StockWithShapeApiDocumentation_GeneratesExpectedJsonLD()
+        {
+            // Arrange
+
+            string expectedJsonLD = File.ReadAllText(
+                "expected-api-documentation-with-stock-shape.jsonld");
+
+            var apiDocumentation = new ApiDocumentation(new Uri("https://api.example.com/doc"));
+            apiDocumentation.Context.TryAddMapping("doc", new Uri("https://api.example.com/doc#"));
+
+            var stockCategories = new string[]
+            {
+                "Blue chip",
+                "Speculative",
+                "Growth",
+                "Value",
+                "Income",
+                "Penny",
+                "Cyclical"
+            };
+
+            var stockShape = new NodeShape(
+                new Uri("doc:Stock"),
+                new PropertyShape(new Uri("doc:Stock/category"), stockCategories));
+
+            apiDocumentation.AddSupportedClass<Stock>(stockShape);
+
+            // Act
+
+            string jsonLD = JsonSerializer.Serialize(apiDocumentation, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+
+            // Assert
+
+            Assert.Equal(expectedJsonLD, jsonLD);
         }
     }
 }
