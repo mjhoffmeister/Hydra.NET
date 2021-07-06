@@ -14,9 +14,10 @@ namespace Hydra.NET
         /// </summary>
         public Operation() { }
 
-        internal Operation(OperationAttribute operationAttribute)
+        internal Operation(OperationAttribute operationAttribute, NodeShape? expects = null)
         {
             Method = operationAttribute.Method;
+            Expects = expects;
             Title = operationAttribute.Title;
         }
 
@@ -37,5 +38,14 @@ namespace Hydra.NET
         /// </summary>
         [JsonPropertyName("method")]
         public string? Method { get; set; }
+        
+        /// <summary>
+        /// Specifies what the server expects from the client in the form of a SHACL node shape.
+        /// TODO: add an "expects" property for Hydra classes, and make it mutually exclusive with 
+        /// this property.
+        /// </summary>
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("expects")]
+        public NodeShape? Expects { get; set; }
     }
 }

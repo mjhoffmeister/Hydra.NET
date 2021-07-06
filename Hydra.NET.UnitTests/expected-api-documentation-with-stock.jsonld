@@ -1,5 +1,6 @@
 {
   "@context": {
+    "sh": "http://www.w3.org/ns/shacl#",
     "hydra": "https://www.w3.org/ns/hydra/core#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
@@ -8,10 +9,16 @@
     "Class": "hydra:Class",
     "Collection": "hydra:Collection",
     "description": "hydra:description",
+    "extension": "hydra:extension",
+    "in": "sh:in",
     "memberAssertion": "hydra:memberAssertion",
+    "NodeShape": "sh:NodeShape",
     "object": "hydra:object",
     "Operation": "hydra:Operation",
+    "path": "sh:path",
     "property": "hydra:property",
+    "propertyShape": "sh:property",
+    "PropertyShape": "sh:PropertyShape",
     "range": "rdfs:range",
     "readable": "hydra:readable",
     "required": "hydra:required",
@@ -19,12 +26,14 @@
     "supportedOperation": "hydra:supportedOperation",
     "supportedProperty": "hydra:supportedProperty",
     "SupportedProperty": "hydra:SupportedProperty",
+    "targetClass": "sh:targetClass",
     "title": "hydra:title",
     "writable": "hydra:writable",
     "doc": "https://api.example.com/doc#"
   },
   "@id": "https://api.example.com/doc",
   "@type": "ApiDocumentation",
+  "extension": "http://www.w3.org/ns/shacl#",
   "supportedClass": [
     {
       "@id": "doc:Stock",
@@ -53,6 +62,17 @@
           "property": {
             "@id": "doc:Stock/currentPrice",
             "range": "xsd:decimal"
+          }
+        },
+        {
+          "@type": "SupportedProperty",
+          "title": "Category",
+          "required": false,
+          "readable": true,
+          "writable": true,
+          "property": {
+            "@id": "doc:Stock/category",
+            "range": "xsd:string"
           }
         }
       ],

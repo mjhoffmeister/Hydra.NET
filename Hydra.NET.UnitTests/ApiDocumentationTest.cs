@@ -1,5 +1,4 @@
-﻿//using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -35,7 +34,7 @@ namespace Hydra.NET.UnitTests
         }
 
         [Fact]
-        public static void Deserialize_StockApiDocumentation_CreatesApiDocumentationWithStockClass()
+        public static void Deserialize_StockApiDocumentation_CreatesStockClass()                   
         {
             // Arrange
 
@@ -57,6 +56,30 @@ namespace Hydra.NET.UnitTests
         }
 
         [Fact]
+        public static void Deserialize_StockWithShapeApiDocumentation_CreatesStockNodeShape()
+        {
+            // Arrange
+
+            string apiDocumentationWithStockClassJsonLD =
+                File.ReadAllText("expected-api-documentation-with-stock-shape.jsonld");
+
+            // Act
+
+            ApiDocumentation? apiDocumentation = JsonSerializer.Deserialize<ApiDocumentation>(
+                apiDocumentationWithStockClassJsonLD);
+
+            // Assert
+
+            Assert.NotNull(
+                apiDocumentation?
+                    .SupportedClasses?
+                    .First()?
+                    .SupportedOperations?
+                    .First()?
+                    .Expects);
+        }
+
+        [Fact]
         public static void Serialize_StockWithShapeApiDocumentation_GeneratesExpectedJsonLD()
         {
             // Arrange
@@ -67,6 +90,7 @@ namespace Hydra.NET.UnitTests
             var apiDocumentation = new ApiDocumentation(new Uri("https://api.example.com/doc"));
             apiDocumentation.Context.TryAddMapping("doc", new Uri("https://api.example.com/doc#"));
 
+            // These categories would come from the API
             var stockCategories = new string[]
             {
                 "Blue chip",

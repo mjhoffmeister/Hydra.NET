@@ -10,22 +10,30 @@ namespace Hydra.NET
     /// </summary>
     public class NodeShape
     {
+        /// <summary>
+        /// Default constructor for deserialization.
+        /// </summary>
+        public NodeShape() { }
+
         public NodeShape(Uri targetClass, params PropertyShape[] propertyShapes)
         {
             PropertyShapes = propertyShapes;
             TargetClass = targetClass;
         }
 
+        [JsonPropertyName("@type")]
+        public string Type => "NodeShape";
+
         /// <summary>
         /// The target class of the node shape.
         /// </summary>
         [JsonPropertyName("targetClass")]
-        public Uri TargetClass { get; }
+        public Uri? TargetClass { get; set; }
 
         /// <summary>
         /// The node shape's <see cref="PropertyShape"/>s.
         /// </summary>
-        [JsonPropertyName("property")]
-        public IEnumerable<PropertyShape> PropertyShapes { get; }
+        [JsonPropertyName("propertyShape")]
+        public IEnumerable<PropertyShape>? PropertyShapes { get; set; }
     }
 }

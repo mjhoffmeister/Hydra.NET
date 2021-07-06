@@ -7,7 +7,7 @@ namespace Hydra.NET.UnitTests
     [SupportedCollection("doc:StockCollection", Title = "Stocks", Description = "Stock listing")]
     public class Stock
     {
-        public Stock(Uri id, string symbol, double currentPrice, string category)
+        public Stock(Uri id, string symbol, double currentPrice, string? category = null)
         {
             Category = category;
             CurrentPrice = currentPrice;

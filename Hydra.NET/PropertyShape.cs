@@ -11,6 +11,11 @@ namespace Hydra.NET
     public class PropertyShape
     {
         /// <summary>
+        /// Default constructor for deserialization.
+        /// </summary>
+        public PropertyShape() { }
+
+        /// <summary>
         /// Creates a new property shape.
         /// </summary>
         /// <param name="path">The path of the property to which the shape applies.</param>
@@ -22,16 +27,22 @@ namespace Hydra.NET
         }
 
         /// <summary>
+        /// The property shape's type (PropertyShape.)
+        /// </summary>
+        [JsonPropertyName("@type")]
+        public string Type => "PropertyShape";
+
+        /// <summary>
         /// The path of the property to which the shape applies.
         /// </summary>
         [JsonPropertyName("path")]
-        public Uri Path { get; }
+        public Uri? Path { get; set; }
 
         /// <summary>
         /// The allowed values for the property.
         /// </summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("in")]
-        public IEnumerable<string>? AllowedValues { get; }
+        public IEnumerable<string>? AllowedValues { get; set; }
     }
 }
