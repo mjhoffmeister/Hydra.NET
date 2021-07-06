@@ -1,6 +1,6 @@
 {
   "@context": {
-    "hashi": "http://www.w3.org/ns/shacl#",
+    "sh": "http://www.w3.org/ns/shacl#",
     "hydra": "https://www.w3.org/ns/hydra/core#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
@@ -9,14 +9,16 @@
     "Class": "hydra:Class",
     "Collection": "hydra:Collection",
     "description": "hydra:description",
-    "in": "hashi:in",
+    "extension": "hydra:extension",
+    "in": "sh:in",
     "memberAssertion": "hydra:memberAssertion",
+    "NodeShape": "sh:NodeShape",
     "object": "hydra:object",
-    "NodeShape": "hashi:NodeType",
     "Operation": "hydra:Operation",
-    "path": "hashi:path",
+    "path": "sh:path",
     "property": "hydra:property",
-    "propertyShape": "hashi:property",
+    "propertyShape": "sh:property",
+    "PropertyShape": "sh:PropertyShape",
     "range": "rdfs:range",
     "readable": "hydra:readable",
     "required": "hydra:required",
@@ -24,7 +26,7 @@
     "supportedOperation": "hydra:supportedOperation",
     "supportedProperty": "hydra:supportedProperty",
     "SupportedProperty": "hydra:SupportedProperty",
-    "targetClass": "hashi:targetClass",
+    "targetClass": "sh:targetClass",
     "title": "hydra:title",
     "writable": "hydra:writable",
     "doc": "https://api.example.com/doc#"
@@ -65,7 +67,6 @@
         {
           "@type": "SupportedProperty",
           "title": "Category",
-          "description": "The stock's category'",
           "required": false,
           "readable": true,
           "writable": true,
@@ -78,13 +79,14 @@
       "supportedOperation": [
         {
           "@type": "Operation",
-          "title": "Add stock",
-          "method": "Post",
+          "title": "Update stock",
+          "method": "PUT",
           "expects": {
             "@type": "NodeShape",
             "targetClass": "doc:Stock",
             "propertyShape": [
               {
+                "@type": "PropertyShape",
                 "path": "doc:Stock/category",
                 "in": [
                   "Blue chip",

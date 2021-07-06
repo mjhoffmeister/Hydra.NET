@@ -14,5 +14,15 @@
         public const string Post = "POST";
 
         public const string Put = "PUT";
+
+        /// <summary>
+        /// Determines whether a method is a method that updates a resource.
+        /// </summary>
+        /// <param name="method">The method to evaluate.</param>
+        /// <returns>
+        /// <see cref="true"/> if the method updates a resource; <see cref="false"/>, otherwise.
+        /// </returns>
+        public static bool IsUpdateMethod(string? method) =>
+            method != null && (method == Patch || method == Post || method == Put);
     }
 }
