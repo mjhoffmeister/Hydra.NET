@@ -37,9 +37,27 @@
   "supportedClass": [
     {
       "@id": "doc:Stock",
-      "@type": "Class",
+      "@type": [
+        "Class",
+        "NodeShape"
+      ],
       "title": "Stock",
       "description": "Represents a stock.",
+      "propertyShape": [
+        {
+          "@type": "PropertyShape",
+          "path": "doc:Stock/category",
+          "in": [
+            "Blue chip",
+            "Speculative",
+            "Growth",
+            "Value",
+            "Income",
+            "Penny",
+            "Cyclical"
+          ]
+        }
+      ],
       "supportedProperty": [
         {
           "@type": "SupportedProperty",
