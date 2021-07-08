@@ -39,6 +39,7 @@ namespace Hydra.NET.UnitTests
             Xsd.String,
             Title = "Category",
             IsRequired = false)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? Category { get; }
     }
 }

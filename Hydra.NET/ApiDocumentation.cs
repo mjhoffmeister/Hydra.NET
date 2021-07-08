@@ -103,7 +103,7 @@ namespace Hydra.NET
             }
 
             // Create a supported class from the attribute
-            var supportedClass = new SupportedClass(supportedClassAttribute);
+            var supportedClass = new SupportedClass(supportedClassAttribute, nodeShape);
 
             // Get supported property attributes
             IEnumerable<SupportedPropertyAttribute> supportedPropertyAttributes =
@@ -119,8 +119,7 @@ namespace Hydra.NET
             }
 
             // Add supported operations
-            supportedClass.SupportedOperations = GetSupportedOperations(
-                type, nodeShape: nodeShape);
+            supportedClass.SupportedOperations = GetSupportedOperations(type);
 
             // Add the supported class
             SupportedClasses.Add(supportedClass);
@@ -168,10 +167,9 @@ namespace Hydra.NET
         /// <param name="collectionType">
         /// The collection type for which to get supported operations.
         /// </param>
-        /// <param name="nodeShape">The node shape for the operations' type.</param>
         /// <returns>Supported operations if any were found; null, otherwise.</returns>
         private IEnumerable<Operation>? GetSupportedOperations(
-            Type type, Type? collectionType = null, NodeShape? nodeShape = null)
+            Type type, Type? collectionType = null)
         {
             if (_cachedOperationAttributes == null)
             {
@@ -188,9 +186,7 @@ namespace Hydra.NET
             if (!_cachedOperationAttributes.Contains(searchType))
                 return null;
 
-            return _cachedOperationAttributes[searchType].Select(a => 
-                Method.IsUpdateMethod(a.Method) && nodeShape != null ? 
-                    new Operation(a, nodeShape) : new Operation(a));
+            return _cachedOperationAttributes[searchType].Select(a => new Operation(a));
         }
     }
 }

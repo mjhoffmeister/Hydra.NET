@@ -18,11 +18,14 @@ namespace Hydra.NET
         /// </summary>
         public SupportedClass() {}
 
-        internal SupportedClass(SupportedClassAttribute supportedClassAttribute)
+        internal SupportedClass(
+            SupportedClassAttribute supportedClassAttribute, NodeShape? nodeShape = null)
         {
             Description = supportedClassAttribute.Description;
             Id = supportedClassAttribute.Id;
+            PropertyShapes = nodeShape?.PropertyShapes;
             Title = supportedClassAttribute.Title;
+            Types = nodeShape == null ? new[] { "Class" } : new[] { "Class", "NodeShape" };
         }
 
         /// <summary>
@@ -35,7 +38,7 @@ namespace Hydra.NET
         /// The class's type: Class
         /// </summary>
         [JsonPropertyName("@type")]
-        public virtual string Type => "Class";
+        public IEnumerable<string>? Types { get; set; }
 
         /// <summary>
         /// The class's title.
@@ -50,6 +53,12 @@ namespace Hydra.NET
         public string? Description { get; set; }
 
         /// <summary>
+        /// The class's property shapes. When set, the SHACL extension is implicity used.
+        /// </summary>
+        [JsonPropertyName("propertyShape")]
+        public IEnumerable<PropertyShape>? PropertyShapes { get; set; }
+
+        /// <summary>
         /// The class's supported properties.
         /// </summary>
         [JsonPropertyName("supportedProperty")]
@@ -60,6 +69,7 @@ namespace Hydra.NET
         /// </summary>
         //[JsonProperty(
         [JsonPropertyName("supportedOperation")]
+        
         public IEnumerable<Operation>? SupportedOperations { get; set; }
     }
 }
