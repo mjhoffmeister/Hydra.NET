@@ -1,10 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.Json;
 
 namespace Hydra.NET
 {
     internal static class JsonElementExtensions
     {
+        public static IEnumerable<T>? TryDeserializeEnumerable<T>(
+            this JsonElement jsonElement, string propertyName)
+        {
+            if (!jsonElement.TryGetProperty(propertyName, out JsonElement value))
+                return null;
+
+            string json = value.GetRawText();
+
+            if (json[0] == '[' && json[^1] == ']')
+                return JsonSerializer.Deserialize<IEnumerable<T>>(json);
+
+            return null;
+        }
+
         /// <summary>
         /// Tries to deserialize the value of a property in a <see cref="JsonElement"/>.
         /// </summary>
@@ -19,6 +34,7 @@ namespace Hydra.NET
                 return null;
 
             string json = value.GetRawText();
+
             return JsonSerializer.Deserialize<T>(json);
         }
 

@@ -20,13 +20,8 @@ namespace Hydra.NET
             Id = supportedCollectionAttribute.Id;
             MemberAssertion = new MemberAssertion(@object: memberId, property: new Uri(Rdf.Type));
             Title = supportedCollectionAttribute.Title;
+            Types = new[] { "Collection" };
         }
-
-        /// <summary>
-        /// The collection's type: Collection.
-        /// </summary>
-        [JsonPropertyName("@type")]
-        public override string Type => "Collection";
 
         /// <summary>
         /// Member assertion.

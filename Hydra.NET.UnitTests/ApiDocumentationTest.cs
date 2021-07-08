@@ -74,9 +74,7 @@ namespace Hydra.NET.UnitTests
                 apiDocumentation?
                     .SupportedClasses?
                     .First()?
-                    .SupportedOperations?
-                    .First()?
-                    .Expects);
+                    .PropertyShapes);
         }
 
         [Fact]
