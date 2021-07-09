@@ -32,6 +32,7 @@ namespace Hydra.NET
             { "Class", new Uri("hydra:Class") },
             { "Collection", new Uri("hydra:Collection") },
             { "description", new Uri("hydra:description") },
+            { "entrypoint", new Uri("hydra:entrypoint") },
             { "extension", new Uri("hydra:extension") },
             { "in", new Uri("sh:in") },
             { "memberAssertion", new Uri("hydra:memberAssertion") },
@@ -65,6 +66,13 @@ namespace Hydra.NET
         /// </summary>
         [JsonPropertyName("@type")]
         public string Type => "ApiDocumentation";
+
+        /// <summary>
+        /// URL of the API's entry point.
+        /// </summary>
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonPropertyName("entrypoint")]
+        public Uri? EntryPoint { get; set; }
 
         /// <summary>
         /// The extensions used by the API.
