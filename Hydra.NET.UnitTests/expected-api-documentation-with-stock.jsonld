@@ -9,6 +9,7 @@
     "Class": "hydra:Class",
     "Collection": "hydra:Collection",
     "description": "hydra:description",
+    "entrypoint": "hydra:entrypoint",
     "extension": "hydra:extension",
     "in": "sh:in",
     "memberAssertion": "hydra:memberAssertion",
