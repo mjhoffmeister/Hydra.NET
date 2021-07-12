@@ -12,6 +12,7 @@
     "entrypoint": "hydra:entrypoint",
     "extension": "hydra:extension",
     "in": "sh:in",
+    "Link": "hydra:Link",
     "memberAssertion": "hydra:memberAssertion",
     "NodeShape": "sh:NodeShape",
     "object": "hydra:object",

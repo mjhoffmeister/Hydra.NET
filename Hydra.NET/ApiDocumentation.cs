@@ -35,6 +35,7 @@ namespace Hydra.NET
             { "entrypoint", new Uri("hydra:entrypoint") },
             { "extension", new Uri("hydra:extension") },
             { "in", new Uri("sh:in") },
+            { "Link", new Uri("hydra:Link") },
             { "memberAssertion", new Uri("hydra:memberAssertion") },
             { "NodeShape", new Uri("sh:NodeShape") },
             { "object", new Uri("hydra:object") },

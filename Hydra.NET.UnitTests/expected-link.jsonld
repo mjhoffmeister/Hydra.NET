@@ -1,0 +1,6 @@
+{
+  "@id": "https://api.example.com/stocks",
+  "@type": "Link",
+  "title": "Stocks",
+  "description": "A link to the stocks collection."
+}
