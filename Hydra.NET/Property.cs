@@ -19,12 +19,12 @@ namespace Hydra.NET
         /// </summary>
         /// <param name="id">Id of the property.</param>
         /// <param name="range">Range of the property.</param>
-        internal Property(string id, string range) => (Id, Range) = (new Uri(id), new Uri(range));
+        internal Property(string id, string range) => (Id, Range) = (new Uri(id), range);
 
         [JsonPropertyName("@id")]
         public Uri? Id { get; set; }
 
         [JsonPropertyName("range")]
-        public Uri? Range { get; set; } 
+        public string? Range { get; set; } 
     }
 }
