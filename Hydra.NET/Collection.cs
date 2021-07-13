@@ -11,25 +11,19 @@ namespace Hydra.NET
     /// <typeparam name="T">Member type.</typeparam>
     public class Collection<T>
     {
-        private readonly Context _context = new Context(new Dictionary<string, Uri>()
-        {
-            { "hydra", new Uri("http://www.w3.org/ns/hydra/core#") },
-            { "Collection", new Uri("hydra:Collection") },
-            { "member", new Uri("hydra:member") }
-        });
-
         /// <summary>
         /// Default constructor for deserialization.
         /// </summary>
         public Collection() { }
 
-        public Collection(Uri id, IEnumerable<T> members) => (Id, Members) = (id, members);
+        public Collection(Context context, Uri id, IEnumerable<T> members) => 
+            (Context, Id, Members) = (context, id, members);
 
         /// <summary>
         /// The collection's context.
         /// </summary>
         [JsonPropertyName("@context")]
-        public Context Context => _context;
+        public Context? Context { get; set; }
 
         /// <summary>
         /// The collection's id.
