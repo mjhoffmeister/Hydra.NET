@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using Xunit;
@@ -14,6 +15,14 @@ namespace Hydra.NET.UnitTests
 
             string expectedJsonLD = File.ReadAllText("expected-stock-collection.jsonld");
 
+            // Create context
+            Context context = new(new Dictionary<string, Uri>()
+            {
+                { "hydra", new Uri("http://www.w3.org/ns/hydra/core#") },
+                { "Collection", new Uri("hydra:Collection") },
+                { "member", new Uri("hydra:member") }
+            });
+
             // Create stocks
             var stocks = new Stock[]
             {
@@ -23,6 +32,7 @@ namespace Hydra.NET.UnitTests
 
             // Create a stock collection
             var stockCollection = new Collection<Stock>(
+                context,
                 new Uri("https://api.example.com/stocks"),
                 stocks);
 
