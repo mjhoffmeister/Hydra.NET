@@ -16,8 +16,9 @@ namespace Hydra.NET
         /// </summary>
         public Collection() { }
 
-        public Collection(Context? context, Uri id, IEnumerable<T> members) => 
-            (Context, Id, Members) = (context, id, members);
+        public Collection(
+            Context? context, Uri id, IEnumerable<T> members) => 
+                (Context, Id, Members) = (context, id, members);
 
         /// <summary>
         /// The collection's context.
