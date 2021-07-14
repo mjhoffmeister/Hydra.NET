@@ -38,6 +38,9 @@
     <None Update="expected-link.jsonld">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="expected-stock-collection-with-member-assertion.jsonld">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="expected-stock-collection.jsonld">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -25,6 +25,7 @@ namespace Hydra.NET
 
         /// <summary>
         /// Member assertion.
+        /// TODO: should member assertions be included in API documentation?
         /// </summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("memberAssertion")]
