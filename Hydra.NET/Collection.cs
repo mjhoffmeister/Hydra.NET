@@ -20,6 +20,10 @@ namespace Hydra.NET
             Context? context, Uri id, IEnumerable<T> members) => 
                 (Context, Id, Members) = (context, id, members);
 
+        public Collection(
+            Context? context, Uri id, MemberAssertion memberAssertion, IEnumerable<T> members) =>
+                (Context, Id, MemberAssertion, Members) = (context, id, memberAssertion, members);
+
         /// <summary>
         /// The collection's context.
         /// </summary>
@@ -38,6 +42,10 @@ namespace Hydra.NET
         /// </summary>
         [JsonPropertyName("@type")]
         public string Type => "Collection";
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        [JsonPropertyName("memberAssertion")]
+        public MemberAssertion? MemberAssertion { get; set; }
 
         /// <summary>
         /// The member items of the collection.
