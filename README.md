@@ -454,7 +454,7 @@ You now have a way to query the info for the Hello resource as well as a way to 
 To describe a Hydra Supported Class, decorate the model type that represents a resource with the `[SupportedClass]` attribute. Describe the supported properties with the `[SupportedProperty]` attribute.
 
 ```csharp
-[SupportedClass("doc:Stock", Title = "Stock", Description = "Represents a stock.")]
+[SupportedClass("Stock", Title = "Stock", Description = "Represents a stock.")]
 public class Stock
 {
     public Stock(Uri id, string symbol, double currentPrice)
@@ -468,7 +468,7 @@ public class Stock
     public Uri Id { get; }
 
     [SupportedProperty(
-        "doc:Stock/symbol",
+        "Stock/symbol",
         Xsd.String,
         Title = "Stock symbol",
         IsWritable = false)]
@@ -476,7 +476,7 @@ public class Stock
     public string Symbol { get; }
 
     [SupportedProperty(
-        "doc:Stock/currentPrice",
+        "Stock/currentPrice",
         Xsd.Decimal,
         Title = "Current price",
         Description = "The current price of the stock.")]
@@ -486,19 +486,21 @@ public class Stock
 ```
 ### API Collections and the Hydra Collection
 
-To describe a Hydra Supported Collection, decorate the model type that represents an item in the collection with the `[SupportedCollection]` attribute.
+To describe a Hydra Collection, decorate the class that represents an item in the collection with the `[SupportedCollection]` attribute.
 
 ```csharp
-[SupportedClass("doc:Stock", Title = "Stock", Description = "Represents a stock.")]
-[SupportedCollection("doc:StockCollection", Title = "Stocks", Description = "Stock listing")]
+[SupportedClass("Stock", Title = "Stock", Description = "Represents a stock.")]
+[SupportedCollection("StockCollection", Title = "Stocks", Description = "Stock listing")]
 public class Stock
 {
     // Class code here
 }
 ```
+Note that "SupportedCollection" isn't a part of the Hydra core vocabulary. It's used as a convention in Hydra.NET.
+
 ### API Operations and the Hydra Operation
 
-To describe Hydra Supported Operations, decorate the controller method that represents the operation with the  `[Operation]` attribute.
+To describe Hydra Supported Operations, decorate the controller method that represents the operation with the `[Operation]` attribute.
 
 ```csharp
 public class StocksController
@@ -522,16 +524,17 @@ The `ApiDocumentation` class is the central documentation source for a Hydra Web
 
 ```csharp
 // Create a new API documentation
-var apiDocumentation = new ApiDocumentation(new Uri("https://api.example.com/doc"));
+var apiDocumentation = new ApiDocumentation(new Uri("https://api.example.com/doc"), "doc");
 
 // Add Stock as a supported class
 apiDocumentation.AddSupportedClass<Stock>();
 ```
-
 The [context](https://www.w3.org/2018/jsonld-cg-reports/json-ld/#the-context) of `ApiDocumentation` instances is initialized with Hydra, RDF, RDFS, and XSD mappings. Future versions of Hydra.NET may make this more dynamic. Nevertheless, you can add your own context mappings:
+
 ```csharp
-apiDocumentation.Context.TryAddMapping("doc", new Uri("https://api.example.com/doc#"));
+apiDocumentation.Context.TryAddMapping("schema", new Uri("https://schema.org/"));
 ```
+The `contextPrefix` parameter in the `ApiDocumentation` constructor sets the API documentation context prefix. It will be applied to all added supported classes, properties, and collections automatically.
 
 Operations are automatically discovered for their associated types. Given the above examples, the result of serializing `apiDocumentation` will be the following JSON-LD:
 ```json
@@ -626,8 +629,7 @@ Operations are automatically discovered for their associated types. Given the ab
 Hydra allows for SHACL support through [extensions](https://www.hydra-cg.com/spec/latest/core/#extensions). `Hydra.NET` adds SHACL as an extension by default, though this may be made configurable in later versions. The primary motivation is to specify allowed values for properties via SHACL's ["in" constraint](https://www.w3.org/TR/shacl/#InConstraintComponent). You can add this constraint to your API documentation by including a `NodeShape` and `PropertyShape`s with a `SupportedClass`.
 
 ```csharp
-var apiDocumentation = new ApiDocumentation(new Uri("https://api.example.com/doc"));
-apiDocumentation.Context.TryAddMapping("doc", new Uri("https://api.example.com/doc#"));
+var apiDocumentation = new ApiDocumentation(new Uri("https://api.example.com/doc"), "doc");
 
 // These categories would come from the API
 var stockCategories = new string[]
@@ -642,8 +644,8 @@ var stockCategories = new string[]
 };
 
 var stockShape = new NodeShape(
-    new Uri("doc:Stock"),
-    new PropertyShape(new Uri("doc:Stock/category"), stockCategories));
+    new Uri("Stock"),
+    new PropertyShape(new Uri("Stock/category"), stockCategories));
 
 apiDocumentation.AddSupportedClass<Stock>(stockShape);
 ```
