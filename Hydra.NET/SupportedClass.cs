@@ -25,7 +25,7 @@ namespace Hydra.NET
         {
             Description = supportedClassAttribute.Description;
             Id = new Uri($"{contextPrefix}:{supportedClassAttribute.Id}");
-            PropertyShapes = nodeShape?.PropertyShapes;
+            PropertyShapes = nodeShape?.WithContextPrefix(contextPrefix).PropertyShapes;
             Title = supportedClassAttribute.Title;
             Types = nodeShape == null ? new[] { "Class" } : new[] { "Class", "NodeShape" };
         }
