@@ -644,8 +644,8 @@ var stockCategories = new string[]
 };
 
 var stockShape = new NodeShape(
-    new Uri("Stock"),
-    new PropertyShape(new Uri("Stock/category"), stockCategories));
+    "Stock",
+    new PropertyShape("Stock/category", stockCategories));
 
 apiDocumentation.AddSupportedClass<Stock>(stockShape);
 ```
@@ -740,7 +740,7 @@ The above example will generate the following JSON-LD for the `Stock` class.
 
 ## Contributing
 
-`Hydra.NET` is a project I created for use in my personal projects without much expectation that others would be interested. Nevertheless, pull requests and issues are welcome. I've only implemented the parts of the Hydra spec that I've needed, and my understanding of Hydra and JSON-LD is certainly incomplete.
+Hydra.NET is a project I created for use in my personal projects without much expectation that others would be interested. Nevertheless, pull requests and issues are welcome. I've only implemented the parts of the Hydra spec that I've needed, and my understanding of Hydra and JSON-LD is certainly incomplete.
 
 
 
