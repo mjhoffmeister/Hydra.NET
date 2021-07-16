@@ -11,7 +11,7 @@ namespace Hydra.NET
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]  
     public class SupportedCollectionAttribute : Attribute
     {
-        public SupportedCollectionAttribute(string id) => Id = new Uri(id);
+        public SupportedCollectionAttribute(string id) => Id = id;
 
         /// <summary>
         /// The collection's description.
@@ -21,7 +21,7 @@ namespace Hydra.NET
         /// <summary>
         /// The collection's id.
         /// </summary>
-        public Uri Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// The collection's title.

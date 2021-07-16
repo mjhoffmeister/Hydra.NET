@@ -12,7 +12,12 @@ namespace Hydra.NET
         /// Includes the class in the API documentation.
         /// </summary>
         /// <param name="id">Id IRI. Relative to the API documentation id.</param>
-        public SupportedClassAttribute(string id) => Id = new Uri(id);
+        public SupportedClassAttribute(string id) => Id = id;
+
+        /// <summary>
+        /// The class's id.
+        /// </summary>
+        public string Id { get; }
 
         /// <summary>
         /// The class's description. Default: <see cref="null"/>.
@@ -23,11 +28,6 @@ namespace Hydra.NET
         /// The class's title. Default: <see cref="null"/>.
         /// </summary>
         public string? Title { get; set; }
-
-        /// <summary>
-        /// The class's id.
-        /// </summary>
-        public Uri Id { get; }
 
     }
 }

@@ -19,10 +19,12 @@ namespace Hydra.NET
         public SupportedClass() {}
 
         internal SupportedClass(
-            SupportedClassAttribute supportedClassAttribute, NodeShape? nodeShape = null)
+            SupportedClassAttribute supportedClassAttribute,
+            string contextPrefix,
+            NodeShape? nodeShape = null)
         {
             Description = supportedClassAttribute.Description;
-            Id = supportedClassAttribute.Id;
+            Id = new Uri($"{contextPrefix}:{supportedClassAttribute.Id}");
             PropertyShapes = nodeShape?.PropertyShapes;
             Title = supportedClassAttribute.Title;
             Types = nodeShape == null ? new[] { "Class" } : new[] { "Class", "NodeShape" };
