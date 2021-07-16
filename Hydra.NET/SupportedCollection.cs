@@ -14,10 +14,12 @@ namespace Hydra.NET
         public SupportedCollection() { }
 
         internal SupportedCollection(
-            Uri memberId, SupportedCollectionAttribute supportedCollectionAttribute)
+            Uri memberId,
+            SupportedCollectionAttribute supportedCollectionAttribute,
+            string contextPrefix)
         {
             Description = supportedCollectionAttribute.Description;
-            Id = supportedCollectionAttribute.Id;
+            Id = new Uri($"{contextPrefix}:{supportedCollectionAttribute.Id}");
             MemberAssertion = new MemberAssertion(@object: memberId, property: new Uri(Rdf.Type));
             Title = supportedCollectionAttribute.Title;
             Types = new[] { "Collection" };

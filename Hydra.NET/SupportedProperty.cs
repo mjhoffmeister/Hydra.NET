@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace Hydra.NET
 {
@@ -14,13 +15,17 @@ namespace Hydra.NET
         /// </summary>
         public SupportedProperty() { }
 
-        internal SupportedProperty(SupportedPropertyAttribute supportedPropertyAttribute)
+        internal SupportedProperty(
+            SupportedPropertyAttribute supportedPropertyAttribute,
+            string contextPrefix)
         {
             Description = supportedPropertyAttribute.Description;
             IsReadable = supportedPropertyAttribute.IsReadable;
             IsRequired = supportedPropertyAttribute.IsRequired;
             IsWritable = supportedPropertyAttribute.IsWritable;
-            Property = supportedPropertyAttribute.Property;
+            Property = new Property(
+                new Uri($"{contextPrefix}:{supportedPropertyAttribute.Id}"),
+                supportedPropertyAttribute.Range);
             Title = supportedPropertyAttribute.Title;
         }
 
@@ -69,9 +74,5 @@ namespace Hydra.NET
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("property")]
         public Property? Property { get; set; }
-
-        
-
-        
     }
 }

@@ -3,12 +3,14 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
-    <Version>1.0.0-beta9</Version>
+    <Version>1.0.0-beta10</Version>
     <PackageProjectUrl>https://github.com/mjhoffmeister/Hydra.NET</PackageProjectUrl>
     <Authors>Matt Hoffmeister</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Description>Hydra.NET is a simple library that provides building blocks for creating hypermedia-driven web APIs with the Hydra specification.
-</Description>
+    <Description>
+      Hydra.NET is a simple library that provides building blocks for creating hypermedia-driven web
+      APIs with the Hydra specification.
+    </Description>
   </PropertyGroup>
 
   <ItemGroup>

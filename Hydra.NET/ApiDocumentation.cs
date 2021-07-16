@@ -15,9 +15,16 @@ namespace Hydra.NET
         // Cached operation attributes
         private ILookup<Type, OperationAttribute>? _cachedOperationAttributes;
 
+        // Context prefix (doc, vocab, etc.)
+        private string? _contextPrefix;
+
         public ApiDocumentation() { }
 
-        public ApiDocumentation(Uri id) => Id = id;
+        public ApiDocumentation(Uri id, string contextPrefix)
+        {
+            (Id, _contextPrefix) = (id, contextPrefix);
+            Context.TryAddMapping(contextPrefix, new Uri(id, "#"));
+        }
 
         // TODO: make this more dynamic
         [JsonPropertyName("@context")]
@@ -111,8 +118,13 @@ namespace Hydra.NET
                     $"because it's not decorated with {nameof(SupportedClassAttribute)}.");
             }
 
+            // Ensure context prefix is set
+            if (_contextPrefix == null)
+                throw ContextPrefixNotSetException();
+
             // Create a supported class from the attribute
-            var supportedClass = new SupportedClass(supportedClassAttribute, nodeShape);
+            var supportedClass = new SupportedClass(
+                supportedClassAttribute, _contextPrefix, nodeShape);
 
             // Get supported property attributes
             IEnumerable<SupportedPropertyAttribute> supportedPropertyAttributes =
@@ -124,7 +136,7 @@ namespace Hydra.NET
             if (supportedPropertyAttributes.Any())
             {
                 supportedClass.SupportedProperties = supportedPropertyAttributes.Select(
-                    a => new SupportedProperty(a));
+                    a => new SupportedProperty(a, _contextPrefix));
             }
 
             // Add supported operations
@@ -138,6 +150,25 @@ namespace Hydra.NET
 
             // Return the object for fluent-style functionality
             return this;
+        }
+
+        /// <summary>
+        /// Sets the API documentation's context prefix.
+        /// </summary>
+        /// <param name="contextPrefix">Context prefix.</param>
+        public void SetContextPrefix(string contextPrefix) => _contextPrefix = contextPrefix;
+
+        /// <summary>
+        /// Creates a new exception indicating that context prefix isn't set.
+        /// </summary>
+        /// <returns><see cref="InvalidOperationException"/>.</returns>
+        private static InvalidOperationException ContextPrefixNotSetException()
+        {
+            return new InvalidOperationException("Context prefix is not set. If you used the " +
+                "default constructor to create you ApiDocumentation object, use the overloaded " +
+                "constructor instead, which allows you to set the context prefix. If you're " +
+                "attempting to add a supported class to a deserialized ApiDocumentation, set the " +
+                "documentation's context prefix with SetContextPrefix, first.");
         }
 
         /// <summary>
@@ -158,7 +189,7 @@ namespace Hydra.NET
 
             // Create a SupportedCollection object from the attribute
             var supportedCollection = new SupportedCollection(
-                memberId, supportedCollectionAttribute)
+                memberId, supportedCollectionAttribute, _contextPrefix!)
             {
                 SupportedOperations = GetSupportedOperations(
                     type, typeof(Collection<T>))

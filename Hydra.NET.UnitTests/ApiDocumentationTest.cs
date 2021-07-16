@@ -16,8 +16,7 @@ namespace Hydra.NET.UnitTests
             string expectedJsonLD = File.ReadAllText(
                 "expected-api-documentation-with-entry-point.jsonld");
 
-            var apiDocumentation = new ApiDocumentation(new Uri("https://api.example.com/doc"));
-            apiDocumentation.Context.TryAddMapping("doc", new Uri("https://api.example.com/doc#"));
+            var apiDocumentation = GetApiDocumentation();
 
             apiDocumentation.EntryPoint = new Uri("https://api.example.com/");
 
@@ -41,8 +40,7 @@ namespace Hydra.NET.UnitTests
             string expectedJsonLD = File.ReadAllText(
                 "expected-api-documentation-with-stock.jsonld");
 
-            var apiDocumentation = new ApiDocumentation(new Uri("https://api.example.com/doc"));
-            apiDocumentation.Context.TryAddMapping("doc", new Uri("https://api.example.com/doc#"));
+            var apiDocumentation = GetApiDocumentation();
 
             apiDocumentation.AddSupportedClass<Stock>();
 
@@ -130,8 +128,7 @@ namespace Hydra.NET.UnitTests
             string expectedJsonLD = File.ReadAllText(
                 "expected-api-documentation-with-stock-shape.jsonld");
 
-            var apiDocumentation = new ApiDocumentation(new Uri("https://api.example.com/doc"));
-            apiDocumentation.Context.TryAddMapping("doc", new Uri("https://api.example.com/doc#"));
+            var apiDocumentation = GetApiDocumentation();
 
             // These categories would come from the API
             var stockCategories = new string[]
@@ -162,5 +159,8 @@ namespace Hydra.NET.UnitTests
 
             Assert.Equal(expectedJsonLD, jsonLD);
         }
+
+        private static ApiDocumentation GetApiDocumentation() =>
+            new(new Uri("https://api.example.com/doc"), "doc");
     }
 }

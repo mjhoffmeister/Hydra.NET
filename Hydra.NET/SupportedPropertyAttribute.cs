@@ -13,13 +13,17 @@ namespace Hydra.NET
         /// </summary>
         /// <param name="id">Id.</param>
         /// <param name="range">Range.</param>
-        public SupportedPropertyAttribute(string id, string range) => 
-            Property = new Property(id, range);
+        public SupportedPropertyAttribute(string id, string range) => (Id, Range) = (id, range);
 
         /// <summary>
         /// The property's description. Default: <see cref="null"/>.
         /// </summary>
         public string? Description { get; set; }
+
+        /// <summary>
+        /// The id of the RDF property.
+        /// </summary>
+        public string Id { get; }
 
         /// <summary>
         /// True if the property is readable; false, otherwise. Default: <see cref="true"/>.
@@ -36,7 +40,10 @@ namespace Hydra.NET
         /// </summary>
         public bool IsWritable { get; set; } = true;
 
-        public Property Property { get; }
+        /// <summary>
+        /// The range of the RDF property.
+        /// </summary>
+        public string Range { get; }
 
         /// <summary>
         /// The property's title. Default: <see cref="null"/>.
