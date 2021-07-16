@@ -20,7 +20,7 @@ namespace Hydra.NET
         /// </summary>
         /// <param name="path">The path of the property to which the shape applies.</param>
         /// <param name="allowedValues">The allowed values for the property.</param>
-        public PropertyShape(Uri path, IEnumerable<string>? allowedValues = null)
+        public PropertyShape(string path, IEnumerable<string>? allowedValues = null)
         {
             AllowedValues = allowedValues;
             Path = path;
@@ -36,7 +36,7 @@ namespace Hydra.NET
         /// The path of the property to which the shape applies.
         /// </summary>
         [JsonPropertyName("path")]
-        public Uri? Path { get; set; }
+        public string? Path { get; set; }
 
         /// <summary>
         /// The allowed values for the property.

@@ -143,8 +143,8 @@ namespace Hydra.NET.UnitTests
             };
 
             var stockShape = new NodeShape(
-                new Uri("doc:Stock"),
-                new PropertyShape(new Uri("doc:Stock/category"), stockCategories));
+                "Stock",
+                new PropertyShape("Stock/category", stockCategories));
 
             apiDocumentation.AddSupportedClass<Stock>(stockShape);
 

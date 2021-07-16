@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -15,7 +15,7 @@ namespace Hydra.NET
         /// </summary>
         public NodeShape() { }
 
-        public NodeShape(Uri targetClass, params PropertyShape[] propertyShapes)
+        public NodeShape(string targetClass, params PropertyShape[] propertyShapes)
         {
             PropertyShapes = propertyShapes;
             TargetClass = targetClass;
@@ -28,12 +28,32 @@ namespace Hydra.NET
         /// The target class of the node shape.
         /// </summary>
         [JsonPropertyName("targetClass")]
-        public Uri? TargetClass { get; set; }
+        public string? TargetClass { get; set; }
 
         /// <summary>
         /// The node shape's <see cref="PropertyShape"/>s.
         /// </summary>
         [JsonPropertyName("propertyShape")]
         public IEnumerable<PropertyShape>? PropertyShapes { get; set; }
+
+        /// <summary>
+        /// Sets the context prefix for the node shape and property shapes.
+        /// </summary>
+        /// <param name="contextPrefix">Context prefix.</param>
+        internal NodeShape WithContextPrefix(string contextPrefix)
+        {
+            if (TargetClass != null)
+                TargetClass = $"{contextPrefix}:{TargetClass}";
+
+            if (PropertyShapes?.Any() == true)
+            {
+                foreach (PropertyShape propertyShape in PropertyShapes)
+                {
+                    propertyShape.Path = $"{contextPrefix}:{propertyShape.Path}";
+                }
+            }
+
+            return this;
+        }
     }
 }
