@@ -23,9 +23,11 @@ namespace Hydra.NET
             IsReadable = supportedPropertyAttribute.IsReadable;
             IsRequired = supportedPropertyAttribute.IsRequired;
             IsWritable = supportedPropertyAttribute.IsWritable;
-            Property = new Property(
-                new Uri($"{contextPrefix}:{supportedPropertyAttribute.Id}"),
-                supportedPropertyAttribute.Range);
+            Property = GetProperty(
+                contextPrefix,
+                supportedPropertyAttribute.Id,
+                supportedPropertyAttribute.Range,
+                supportedPropertyAttribute.AddApiDocumentationPrefixToRange);
             Title = supportedPropertyAttribute.Title;
         }
 
@@ -74,5 +76,26 @@ namespace Hydra.NET
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("property")]
         public Property? Property { get; set; }
+
+        /// <summary>
+        /// Gets the RDF property for the supported property.
+        /// </summary>
+        /// <param name="contextPrefix">Context prefix.</param>
+        /// <param name="id">Id.</param>
+        /// <param name="range">Range</param>
+        /// <param name="addApiDocumentationPrefixToRange">
+        /// Indicator for adding the API documentation prefix to the property's range.
+        /// </param>
+        /// <returns><see cref="Property"/></returns>
+        private Property GetProperty(
+            string contextPrefix, string id, string range, bool addApiDocumentationPrefixToRange)
+        {
+            // Add the API documention prefix to range, if specified
+            range = addApiDocumentationPrefixToRange ?
+                $"{contextPrefix}:{range}" : range;
+
+            // Return the property
+            return new Property(new Uri($"{contextPrefix}:{id}"), range);
+        }
     }
 }

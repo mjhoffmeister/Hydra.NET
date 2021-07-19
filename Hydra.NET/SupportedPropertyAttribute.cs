@@ -16,6 +16,12 @@ namespace Hydra.NET
         public SupportedPropertyAttribute(string id, string range) => (Id, Range) = (id, range);
 
         /// <summary>
+        /// True if the API documentation prefix should be added to the class specified in the
+        /// property's range.
+        /// </summary>
+        public bool AddApiDocumentationPrefixToRange { get; set; } = false;
+
+        /// <summary>
         /// The property's description. Default: <see cref="null"/>.
         /// </summary>
         public string? Description { get; set; }

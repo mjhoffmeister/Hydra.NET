@@ -484,6 +484,24 @@ public class Stock
     public double CurrentPrice { get; }
 }
 ```
+If you'd like to add your API documentation context prefix to a supported property's range, set `AddApiDocumentationPrefixToRange` to `true`.
+
+```csharp
+[SupportedClass("Star")]
+public class Star
+{
+    [SupportedProperty("Star/name", Xsd.String)]
+    public string? Name { get; set; }
+
+    [SupportedProperty(
+        "Star/classification",
+        "StellarClassification",
+        AddApiDocumentationPrefixToRange = true
+    )]
+    public string? Classification { get; set; }
+}
+```
+
 ### API Collections and the Hydra Collection
 
 To describe a Hydra Collection, decorate the class that represents an item in the collection with the `[SupportedCollection]` attribute.

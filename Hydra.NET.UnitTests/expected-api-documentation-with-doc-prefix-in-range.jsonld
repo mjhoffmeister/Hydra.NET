@@ -1,0 +1,67 @@
+{
+  "@context": {
+    "sh": "http://www.w3.org/ns/shacl#",
+    "hydra": "https://www.w3.org/ns/hydra/core#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "ApiDocumentation": "hydra:ApiDocumentation",
+    "Class": "hydra:Class",
+    "Collection": "hydra:Collection",
+    "description": "hydra:description",
+    "entrypoint": "hydra:entrypoint",
+    "extension": "hydra:extension",
+    "in": "sh:in",
+    "Link": "hydra:Link",
+    "memberAssertion": "hydra:memberAssertion",
+    "NodeShape": "sh:NodeShape",
+    "object": "hydra:object",
+    "Operation": "hydra:Operation",
+    "path": "sh:path",
+    "property": "hydra:property",
+    "propertyShape": "sh:property",
+    "PropertyShape": "sh:PropertyShape",
+    "range": "rdfs:range",
+    "readable": "hydra:readable",
+    "required": "hydra:required",
+    "supportedClass": "hydra:supportedClass",
+    "supportedOperation": "hydra:supportedOperation",
+    "supportedProperty": "hydra:supportedProperty",
+    "SupportedProperty": "hydra:SupportedProperty",
+    "targetClass": "sh:targetClass",
+    "title": "hydra:title",
+    "writable": "hydra:writable",
+    "doc": "https://api.example.com/doc#"
+  },
+  "@id": "https://api.example.com/doc",
+  "@type": "ApiDocumentation",
+  "extension": "http://www.w3.org/ns/shacl#",
+  "supportedClass": [
+    {
+      "@id": "doc:Star",
+      "@type": "Class",
+      "supportedProperty": [
+        {
+          "@type": "SupportedProperty",
+          "required": true,
+          "readable": true,
+          "writable": true,
+          "property": {
+            "@id": "doc:Star/name",
+            "range": "xsd:string"
+          }
+        },
+        {
+          "@type": "SupportedProperty",
+          "required": true,
+          "readable": true,
+          "writable": true,
+          "property": {
+            "@id": "doc:Star/classification",
+            "range": "doc:StellarClassification"
+          }
+        }
+      ]
+    }
+  ]
+}

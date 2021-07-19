@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Hydra.NET.UnitTests
 {
-    public static class LinkTest
+    public static class LinkTests
     {
         
         [Fact]

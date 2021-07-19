@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Hydra.NET.UnitTests
 {
-    public static class CollectionTest
+    public static class CollectionTests
     {
         [Fact]
         public static void Serialize_StockCollectionNoOperations_ReturnsExpectedJson()
