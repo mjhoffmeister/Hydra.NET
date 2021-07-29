@@ -31,6 +31,20 @@ namespace Hydra.NET
             Title = supportedPropertyAttribute.Title;
         }
 
+        public SupportedProperty(
+            Uri id,
+            string range,
+            bool isRequired = true,
+            bool isReadable = true,
+            bool isWritable = true,
+            string? title = null,
+            string? description = null)
+        {
+            var property = new Property(id, range);
+            (Title, Description, IsRequired, IsReadable, IsWritable, Property) =
+                (title, description, isRequired, isReadable, isWritable, property);
+        }
+
         /// <summary>
         /// The property's type: SupportedProperty.
         /// </summary>

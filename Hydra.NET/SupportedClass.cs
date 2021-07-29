@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace Hydra.NET
@@ -28,6 +29,26 @@ namespace Hydra.NET
             PropertyShapes = nodeShape?.WithContextPrefix(contextPrefix).PropertyShapes;
             Title = supportedClassAttribute.Title;
             Types = nodeShape == null ? new[] { "Class" } : new[] { "Class", "NodeShape" };
+        }
+
+        public SupportedClass(
+            Uri id,
+            string? title = null,
+            string? description = null,
+            IEnumerable<PropertyShape>? propertyShapes = null,
+            IEnumerable<SupportedProperty>? supportedProperties = null,
+            IEnumerable<Operation>? supportedOperations = null)
+        {
+            IEnumerable<string> types = propertyShapes?.Any() == true ? 
+                new[] { "Class" } : new[] { "Class", "NodeShape" };
+
+            Id = id;
+            Types = types;
+            Title = title;
+            Description = description;
+            PropertyShapes = propertyShapes;
+            SupportedProperties = supportedProperties;
+            SupportedOperations = supportedOperations;
         }
 
         /// <summary>
