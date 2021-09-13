@@ -47,7 +47,7 @@
     <None Update="expected-stock-collection.jsonld">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="expected-stock.jsonld">
+    <None Update="expected-stocks-with-operations.jsonld">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

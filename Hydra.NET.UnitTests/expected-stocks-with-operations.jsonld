@@ -1,0 +1,48 @@
+﻿[
+  {
+    "@context": "https://api.example.com/doc#",
+    "@id": "https://api.example.com/stocks/1",
+    "symbol": "ABC",
+    "currentPrice": 12.34,
+    "operation": [
+      {
+        "@type": "Operation",
+        "method": "DELETE"
+      },
+      {
+        "@type": "Operation",
+        "method": "PUT"
+      }
+    ]
+  },
+  {
+    "@context": "https://api.example.com/doc#",
+    "@id": "https://api.example.com/stocks/2",
+    "symbol": "DEF",
+    "currentPrice": 0.09,
+    "operation": [
+      {
+        "@type": "Operation",
+        "method": "PUT"
+      }
+    ]
+  },
+  {
+    "@context": "https://api.example.com/doc#",
+    "@id": "https://api.example.com/stocks/3",
+    "symbol": "GH",
+    "currentPrice": 1927.2
+  },
+  {
+    "@context": "https://api.example.com/doc#",
+    "@id": "https://api.example.com/stocks/4",
+    "symbol": "I",
+    "currentPrice": 386.92
+  },
+  {
+    "@context": "https://api.example.com/doc#",
+    "@id": "https://api.example.com/stocks/5",
+    "symbol": "JKL",
+    "currentPrice": 5.5
+  }
+]

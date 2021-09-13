@@ -8,8 +8,7 @@
     <Authors>Matt Hoffmeister</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>
-      Hydra.NET is a simple library that provides building blocks for creating hypermedia-driven web
-      APIs with the Hydra specification.
+      Hydra.NET is a simple library that provides building blocks for creating hypermedia-driven web APIs with the Hydra specification.
     </Description>
   </PropertyGroup>
 

@@ -536,6 +536,14 @@ public class StocksController
     }
 }
 ```
+While the above is sufficient for static documentation of operations, you can use the `Operation` class in your resource objects to add dynamic links.
+
+```csharp
+[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+[JsonPropertyName("operation")]
+public IEnumerable<Operation>? Operations { get; set; }
+```
+
 ### API Documentation and the Hydra ApiDocumentation
 
 The `ApiDocumentation` class is the central documentation source for a Hydra Web API. Add your supported classes to it via the `AddSupportedClass<T>()` method.

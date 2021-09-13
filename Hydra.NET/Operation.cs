@@ -4,8 +4,8 @@ namespace Hydra.NET
 {
     /// <summary>
     /// Operation definition supported by instances of a class.
-    /// Rather than manually creating objects of this type, it's recommended to decorate your
-    /// controller methods with <see cref="OperationAttribute"/>.
+    /// For inclusion in your API documentation, it's recommended to decorate your controller
+    /// methods with <see cref="OperationAttribute"/>.
     /// </summary>
     public class Operation
     {
@@ -13,6 +13,8 @@ namespace Hydra.NET
         /// Default constructor for deserialization.
         /// </summary>
         public Operation() { }
+
+        public Operation(string method) => Method = method;
 
         internal Operation(OperationAttribute operationAttribute)
         {
@@ -23,12 +25,14 @@ namespace Hydra.NET
         /// <summary>
         /// The operation's type: Operation.
         /// </summary>
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("@type")]
         public string Type => "Operation";
 
         /// <summary>
         /// The operation's title.
         /// </summary>
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("title")]
         public string? Title { get; set; }
 
