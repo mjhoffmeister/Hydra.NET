@@ -1,6 +1,6 @@
 # Hydra.NET
 
-Hydra.NET is a simple library for ASP.NET that provides the building blocks necessary for creating hypermedia-driven Web APIs with the [Hydra specification](https://www.hydra-cg.com/spec/latest/core/).
+Hydra.NET is a simple library that provides the building blocks for creating hypermedia-driven Web APIs with the [Hydra specification](https://www.hydra-cg.com/spec/latest/core/) in .NET.
 
 ## Quickstart
 
