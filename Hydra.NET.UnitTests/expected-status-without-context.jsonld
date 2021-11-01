@@ -1,0 +1,6 @@
+{
+  "@type": "hydra:Status",
+  "description": "You are not authorized to edit stocks.",
+  "statusCode": 401,
+  "title": "Unauthorized"
+}
