@@ -5,14 +5,29 @@
     /// </summary>
     public static class Method
     {
+        /// <summary>
+        /// DELETE.
+        /// </summary>
         public const string Delete = "DELETE";
 
+        /// <summary>
+        /// GET.
+        /// </summary>
         public const string Get = "GET";
 
+        /// <summary>
+        /// PATCH.
+        /// </summary>
         public const string Patch = "PATCH";
 
+        /// <summary>
+        /// POST.
+        /// </summary>
         public const string Post = "POST";
 
+        /// <summary>
+        /// PUT.
+        /// </summary>
         public const string Put = "PUT";
 
         /// <summary>
